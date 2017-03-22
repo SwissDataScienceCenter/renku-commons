@@ -10,15 +10,16 @@ You can visualise the APIs using swagger-UI:
  * [user](https://swissdatasciencecenter.github.io/rest-api-definitions/swagger-ui/?url=/rest-api-definitions/target/users.json)
  * [typesystem](https://swissdatasciencecenter.github.io/rest-api-definitions/swagger-ui/?url=/rest-api-definitions/target/typesystem.json)
 
-To merge all YAML files into a JSON file, you can run (for example for the graph API):
+To merge all YAML files into a JSON and YAML file, you can run (for example for the graph API):
 
 ´´´sh
 node build.js src/graph.yaml
 ´´´
 
-You may need to install nodejs, npm and json-schema-ref-parser
+You may need to install nodejs, npm json-schema-ref-parser and json2yaml
 
 ´´´sh
 sudo apt install npm
 npm install json-schema-ref-parser
+npm install json2yaml
 ´´´
