@@ -154,6 +154,7 @@ server.pid
 *.eml
 /dist/
 .cache
+.g8
 
 ### SBT ###
 # Simple Build Tool
