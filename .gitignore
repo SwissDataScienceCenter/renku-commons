@@ -1,6 +1,7 @@
 # Adding sub-projects
 
 graph-core
+graph-typesystem
 
 # No intelliJ files tracked
 .idea/
