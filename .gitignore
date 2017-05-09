@@ -1,10 +1,4 @@
-# Adding sub-projects
 
-graph-core
-graph-typesystem
-
-# No intelliJ files tracked
-.idea/
 # Created by https://www.gitignore.io/api/sbt,java,scala,eclipse,intellij+iml
 
 ### Eclipse ###
