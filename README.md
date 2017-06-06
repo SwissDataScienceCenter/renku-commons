@@ -6,20 +6,28 @@ This is still in exploration phase and will change quite a lot until the first a
 
 You can visualise the APIs using swagger-UI:
 
- * [graph](https://swissdatasciencecenter.github.io/rest-api-definitions/swagger-ui/?url=/rest-api-definitions/target/graph.json)
+ * [graph-mutation](https://swissdatasciencecenter.github.io/rest-api-definitions/swagger-ui/?url=/rest-api-definitions/target/graph-mutation.json)
  * [user](https://swissdatasciencecenter.github.io/rest-api-definitions/swagger-ui/?url=/rest-api-definitions/target/users.json)
  * [typesystem](https://swissdatasciencecenter.github.io/rest-api-definitions/swagger-ui/?url=/rest-api-definitions/target/typesystem.json)
 
-To merge all YAML files into a JSON and YAML file, you can run (for example for the graph API):
+Using node LTS v6.10.3
 
-´´´sh
-node build.js src/graph.yaml
-´´´
+Install dependencies:
 
-You may need to install nodejs, npm json-schema-ref-parser and json2yaml
+```sh
+npm install
+```
 
-´´´sh
-sudo apt install npm
-npm install json-schema-ref-parser
-npm install json2yaml
-´´´
+Start the local server, to have local swagger-ui reflecting changes:
+
+```sh
+npm start
+```
+
+Then open a browser at: http://localhost:3000
+
+To manually build the files, do:
+
+```sh
+npm run make
+```
