@@ -6,9 +6,9 @@ This is still in exploration phase and will change quite a lot until the first a
 
 You can visualise the APIs using swagger-UI:
 
- * [graph-mutation](https://swissdatasciencecenter.github.io/rest-api-definitions/swagger-ui/?url=/rest-api-definitions/target/graph-mutation.json)
- * [user](https://swissdatasciencecenter.github.io/rest-api-definitions/swagger-ui/?url=/rest-api-definitions/target/users.json)
- * [typesystem](https://swissdatasciencecenter.github.io/rest-api-definitions/swagger-ui/?url=/rest-api-definitions/target/typesystem.json)
+ * [definitions](https://swissdatasciencecenter.github.io/rest-api-definitions/swagger-ui/dist/?url=/rest-api-definitions/target/definitions.json)
+ * [graph-navigation](https://swissdatasciencecenter.github.io/rest-api-definitions/swagger-ui/dist/?url=/rest-api-definitions/target/graph-navigation.json)]
+ * [graph-mutation](https://swissdatasciencecenter.github.io/rest-api-definitions/swagger-ui/dist/?url=/rest-api-definitions/target/graph-mutation.json)
 
 Using node LTS v6.10.3
 
