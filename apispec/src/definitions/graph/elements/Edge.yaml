@@ -1,0 +1,19 @@
+type: object
+properties:
+  label:
+    type: string
+    description: Edge label
+  from:
+    type: object
+    description: Vertex reference
+  to:
+    type: object
+    description: Vertex reference
+  properties:
+    type: array
+    items:
+      $ref: '../../../api/definitions.yaml#/definitions/Property'
+required:
+  - label
+  - from
+  - to

@@ -1,0 +1,23 @@
+parameters:
+  - name: namespace
+    in: path
+    description: the namespace of the vertex type
+    type: string
+    required: true
+  - name: name
+    in: path
+    description: the name of the vertex type
+    type: string
+    required: true
+get:
+  summary: Return the given vertex type
+  description: Return the given vertex type
+  responses:
+    200:
+      description: Returns the given vertex type.
+      schema:
+        $ref: '../typesystem.yaml#/definitions/VertexType'
+    default:
+      description: Unexpected error
+      schema:
+        $ref: '../typesystem.yaml#/definitions/Error'

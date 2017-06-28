@@ -1,0 +1,26 @@
+# API spec in YAML
+swagger: '2.0'
+info:
+  title: Graph Navigation Service
+  description: Navigate the graph
+  version: "1.0.0"
+# the domain of the service
+host: internal.datascience.ch
+# array of all schemes that your API supports
+schemes:
+  - https
+# will be prefixed to all paths
+basePath: /api/navigation
+produces:
+  - application/json
+consumes:
+  - application/json
+paths:
+  '/vertex/{vertex-id}':
+    $ref: ../paths/navigation/vertex.yaml
+  '/edge/{edge-id}':
+    $ref: ../paths/navigation/edge.yaml
+  '/vertex/{vertex-id}/edges':
+    $ref: ../paths/navigation/vertex-edges.yaml
+definitions:
+  $ref: ./definitions.yaml#/definitions
