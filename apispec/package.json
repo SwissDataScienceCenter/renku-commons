@@ -1,0 +1,15 @@
+{
+  "name": "apispec",
+  "version": "0.0.1",
+  "description": "platform services API specs",
+  "private": true,
+  "scripts": {
+    "dev": "http-server -c-1 ."
+  },
+  "devDependencies": {
+    "http-server": "^0.10.0"
+  },
+  "dependencies": {
+    "swagger-ui-dist": "^3.0.17"
+  }
+}

@@ -1,0 +1,62 @@
+# API spec in YAML
+swagger: '2.0'
+info:
+  title: Resource Manager API
+  description: |
+    Resource Manager API specification
+  version: '0.0.1'
+# the domain of the service
+host: internal.datascience.ch
+# array of all schemes that your API supports
+schemes:
+  - https
+# will be prefixed to all paths
+basePath: /api/rm
+produces:
+  - application/json
+consumes:
+  - application/json
+tags:
+- name: 'Resource Manager'
+  description: 'Resource Manager'
+paths:
+  /authorize:
+    post:
+      tags:
+        - 'Resource Manager'
+      summary: 'Authorize resource access'
+      parameters:
+      - in: body
+        name: body
+        description: 'Resource access request object'
+        required: true
+        schema:
+          $ref: '#/definitions/ResourceAcessRequest'
+      - in: header
+        name: Authorization
+        description: 'Bearer token'
+        required: true
+        type: string
+      responses:
+        200:
+          description: 'ok'
+        401:
+          description: 'Authentication required'
+definitions:
+  ResourceAcessRequest:
+    type: object
+    required: []
+    properties:
+      resourceId:
+        type: integer
+        format: int64
+      scope:
+        type: array
+        items:
+          $ref: '#/definitions/Scope'
+  Scope:
+    type: string
+    enum:
+      - 'access:read'
+      - 'access:write'
+    title: Scope
