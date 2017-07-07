@@ -1,9 +1,0 @@
-title: Operation
-discriminator: type
-properties:
-  type:
-    type: string
-    enum:
-      - create_vertex
-required:
-  - type

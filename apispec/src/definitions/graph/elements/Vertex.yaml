@@ -1,9 +1,0 @@
-title: Vertex
-allOf:
-  - $ref: '../../../api/definitions.yaml#/definitions/Typed'
-  - type: object
-    properties:
-      properties:
-        type: array
-        items:
-          $ref: '../../../api/definitions.yaml#/definitions/MultiPropertyValue'

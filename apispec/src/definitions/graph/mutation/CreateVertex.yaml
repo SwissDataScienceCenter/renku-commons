@@ -1,9 +1,0 @@
-title: CreateVertex
-allOf:
-  - $ref: '../../../api/definitions.yaml#/definitions/Operation'
-  - properties:
-      element:
-        $ref: '../../../api/definitions.yaml#/definitions/NewVertex'
-required:
-  - type
-  - element

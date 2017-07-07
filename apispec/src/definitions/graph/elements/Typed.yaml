@@ -1,6 +1,0 @@
-type: object
-properties:
-  types:
-    type: array
-    items:
-      $ref: '../../../api/definitions.yaml#/definitions/Key'
