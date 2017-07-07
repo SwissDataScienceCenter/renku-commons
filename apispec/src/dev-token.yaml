@@ -1,0 +1,65 @@
+# API spec in YAML
+swagger: '2.0'
+info:
+  title: OIDC tokens
+  description: |
+    Get bearer tokens for development
+  version: '0.0.1'
+# the domain of the service
+host: testing.datascience.ch:8080
+# array of all schemes that your API supports
+schemes:
+  - https
+# will be prefixed to all paths
+basePath: /auth/realms/SDSC/protocol/openid-connect
+produces:
+  - application/json
+consumes:
+  - application/json
+tags:
+- name: 'Token'
+  description: 'Token'
+paths:
+  /token:
+    post:
+      tags:
+      - 'Token'
+      summary: 'Request token'
+      consumes:
+      - application/x-www-form-urlencoded
+      parameters:
+      - name: grant_type
+        in: formData
+        required: true
+        type: string
+        enum:
+        - 'password'
+      - name: username
+        in: formData
+        type: string
+      - name: password
+        in: formData
+        type: string
+        format: password
+      - name: client_id
+        in: formData
+        type: string
+        required: true
+        example: 'demo-client'
+      - name: client_secret
+        in: formData
+        type: string
+        example: '90e2b9a4-ddda-4588-ab64-33dab06389a1'
+      responses:
+        200:
+          description: 'ok'
+          schema:
+            $ref: '#/definitions/Tokens'
+        401:
+          description: 'Unauthorized'
+definitions:
+  Tokens:
+    type: object
+    properties:
+      access_token:
+        type: string

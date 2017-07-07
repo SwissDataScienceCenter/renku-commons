@@ -1,0 +1,29 @@
+# API spec in YAML
+swagger: '2.0'
+info:
+  title: Storage API
+  description: |
+    Storage API specification
+  version: '0.0.1'
+# the domain of the service
+host: internal.datascience.ch
+# array of all schemes that your API supports
+schemes:
+  - https
+# will be prefixed to all paths
+basePath: /api/storage
+produces:
+  - application/json
+consumes:
+  - application/json
+tags:
+- name: 'Explorer'
+  description: 'File explorer'
+paths:
+  /explore/{bucketId}:
+    get:
+      tags:
+      - 'Explorer'
+      responses:
+        404: 'Bucket not found'
+definitions: {}
