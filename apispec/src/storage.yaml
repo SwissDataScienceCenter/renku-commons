@@ -19,11 +19,70 @@ consumes:
 tags:
 - name: 'Explorer'
   description: 'File explorer'
+- name: 'IO'
+  description: 'Perform I/O operations'
 paths:
-  /explore/{bucketId}:
+  /explore/{bucket_id}:
     get:
       tags:
       - 'Explorer'
+      summary: 'Bucket metadata'
+      description: 'Access bucket metadata'
+      parameters:
+      - name: Authorization
+        in: header
+        description: 'Bearer token'
+        required: true
+        type: string
+      - name: bucket_id
+        in: path
+        description: 'Bucket graph id'
+        required: true
+        type: integer
+        format: int64
       responses:
-        404: 'Bucket not found'
+        200:
+          description: 'Ok'
+        404:
+          description: 'Bucket not found'
+  /io/read:
+    get:
+      tags:
+      - 'IO'
+      summary: 'Read file'
+      description: 'Read file specified in authorization bearer token'
+      parameters:
+      - name: Authorization
+        in: header
+        description: 'Bearer token (from authorization request)'
+        required: true
+        type: string
+      responses:
+        200:
+          description: 'Successful read'
+  /io/write:
+    post:
+      tags:
+      - 'IO'
+      summary: 'Write file'
+      description: 'Read file specified in authorization bearer token'
+      consumes:
+      - octet/steam
+      parameters:
+      - name: Authorization
+        in: header
+        description: 'Bearer token (from authorization request)'
+        required: true
+        type: string
+      - name: body
+        in: body
+        description: 'File content'
+        required: true
+        schema:
+          type: string
+          format: binary
+      responses:
+        200:
+          description: 'Successful write'
+
 definitions: {}
