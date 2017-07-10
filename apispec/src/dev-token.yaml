@@ -25,6 +25,11 @@ paths:
       tags:
       - 'Token'
       summary: 'Request token'
+      description: |
+        Request bearer tokens using direct access grant.
+        The response should contain an `access_token` field which value is a base64 encoded string.
+        The token can be used for protected access by inclusion in the HTTP headers:
+          "`Authorization: Bearer cmNlX2FjY2VzcyI6eyJkb2NrZXIt[...]`".
       consumes:
       - application/x-www-form-urlencoded
       parameters:
