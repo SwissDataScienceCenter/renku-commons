@@ -18,16 +18,22 @@
 
 package ch.datascience.service.utils
 
-import play.api.libs.json._
 import play.api.mvc._
 
 /**
-  * Created by johann on 25/04/17.
+  * Created by johann on 12/07/17.
   */
-trait ControllerWithBodyParseJson { this: BaseController =>
+trait ControllerWithFilterBeforeBodyParseAction { this: BaseController =>
 
-  def  bodyParseJson[A](implicit rds: Reads[A]): BodyParser[A] = parse.json.validate(
-    _.validate[A](rds).asEither.left.map(e => BadRequest(JsError.toJson(e)))
-  )(defaultExecutionContext)
+  def FilterBeforeBodyParseAction(filter: (RequestHeader) => Option[Result]): FilterBeforeBodyParseAction = {
+    new FilterBeforeBodyParseActionImpl(filter)
+  }
+
+  protected class FilterBeforeBodyParseActionImpl(
+    filter: (RequestHeader) => Option[Result]
+  ) extends ActionBuilderImpl[AnyContent](parse.default)(defaultExecutionContext)
+    with FilterBeforeBodyParseAction {
+    def filter(rh: RequestHeader): Option[Result] = filter.apply(rh)
+  }
 
 }
