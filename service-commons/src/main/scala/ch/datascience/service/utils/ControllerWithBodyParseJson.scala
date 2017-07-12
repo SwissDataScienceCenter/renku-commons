@@ -10,6 +10,6 @@ trait ControllerWithBodyParseJson { this: BaseController =>
 
   def  bodyParseJson[A](implicit rds: Reads[A]): BodyParser[A] = parse.json.validate(
     _.validate[A](rds).asEither.left.map(e => BadRequest(JsError.toJson(e)))
-  )
+  )(defaultExecutionContext)
 
 }
