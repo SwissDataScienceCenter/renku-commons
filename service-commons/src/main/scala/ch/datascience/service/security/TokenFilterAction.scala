@@ -12,7 +12,7 @@ import scala.util.matching.Regex
 /**
   * Created by johann on 13/07/17.
   */
-case class TokenFilterAction(verifier: JWTVerifier, realm: String = "")
+case class TokenFilterAction(verifier: JWTVerifier, realm: String, altVerifiers: JWTVerifier*)
   extends ActionBuilder[RequestWithToken]
     with ActionTransformer[Request, RequestWithToken]
     with AbstractFilterBeforeBodyParseAction {
@@ -24,7 +24,9 @@ case class TokenFilterAction(verifier: JWTVerifier, realm: String = "")
 
   def filter(rh: RequestHeader): Option[Result] = {
     extractToken(rh.headers) match {
-      case Some(token) => val t = Try { verifier.verify(token) }
+      case Some(token) =>
+        val t0 = Try { verifier.verify(token) }
+        val t = altVerifiers.foldLeft(t0) { (t, v) => t.orElse(Try{ v.verify(token) }) }
         t.map(_ => None).recover {
           case e: JWTDecodeException => Some(makeUnauthorizedResponse(Some("invalid_token"), Some("Token is not a JWT")))
           case e: AlgorithmMismatchException => Some(makeUnauthorizedResponse(Some("invalid_token"), Some("Algorithm mismatch")))
@@ -55,5 +57,11 @@ case class TokenFilterAction(verifier: JWTVerifier, realm: String = "")
     val challenge =  s"Bearer realm=\"$realm\"$errorMsg$errorDescriptionMsg"
     Results.Unauthorized.withHeaders(("WWW-Authenticate", challenge))
   }
+
+}
+
+object TokenFilterAction {
+
+  def apply(verifier: JWTVerifier, altVerifiers: JWTVerifier*): TokenFilterAction = TokenFilterAction(verifier, realm = "", altVerifiers: _*)
 
 }
