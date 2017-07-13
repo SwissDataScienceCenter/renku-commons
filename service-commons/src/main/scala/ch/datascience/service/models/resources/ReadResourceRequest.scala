@@ -16,8 +16,9 @@
  * limitations under the License.
  */
 
-package models
+package ch.datascience.service.models.resources
+
 /**
   * Created by jeberle on 09.06.17.
   */
-case class ReadResourceRequest(appId: Option[Long], resourceId: Long)
+case class ReadResourceRequest(resourceId: Long) extends ResourceRequestDetails

@@ -16,29 +16,22 @@
  * limitations under the License.
  */
 
-package clients
+package ch.datascience.service.models.resources.json
 
-import javax.inject.Inject
-
-import ch.datascience.graph.elements.mutation.Mutation
-import models.json._
+import ch.datascience.service.models.resources.ReadResourceRequest
+import play.api.libs.functional.syntax._
 import play.api.libs.json._
-import play.api.libs.ws._
 
-import scala.concurrent.{ExecutionContext, Future}
-import scala.concurrent.duration._
 
-class StorageClient @Inject()(implicit context: ExecutionContext, ws: WSClient, storageHost: String, token: String) {
+object ReadResourceRequestMappers {
 
-  def write(name: String): Future[JsValue] = {
-    val request: WSRequest = ws.url(storageHost + "/write/" + name)
-      .withHeaders("Accept" -> "application/json", "Authorization" -> token)
-      .withRequestTimeout(10000.millis)
-    val futureResult: Future[JsValue] = request.get().map {
-      response =>
-        response.json
-    }
-    futureResult
-  }
+  def readResourceRequestReads: Reads[ReadResourceRequest] = (
+    (JsPath \ "app_id").readNullable[Long] and
+      (JsPath \ "resource_id").read[Long]
+    )(ReadResourceRequest.apply _)
+
+  def readResourceRequestWrites: Writes[ReadResourceRequest] = (
+    (JsPath \ "app_id").writeNullable[Long] and
+      (JsPath \ "resource_id").write[Long]
+    ) { rr => (rr.appId, rr.resourceId) }
 }
-

@@ -16,17 +16,10 @@
  * limitations under the License.
  */
 
-package models.json
+package ch.datascience.service.models.resources
 
-import models.ReadResourceRequest
-import play.api.libs.json._
-import play.api.libs.functional.syntax._
+/**
+  * Created by jeberle on 09.06.17.
+  */
+case class CreateBucketRequest(name: String, backend: String) extends ResourceRequestDetails
 
-
-object ReadResourceRequestMappers {
-
-  def readResourceRequestReads: Reads[ReadResourceRequest] = (
-      (JsPath \ "app_id").readNullable[Long] and
-      (JsPath \ "resource_id").read[Long]
-    )(ReadResourceRequest.apply _)
-}
