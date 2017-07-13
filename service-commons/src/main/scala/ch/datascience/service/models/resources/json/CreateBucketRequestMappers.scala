@@ -7,13 +7,9 @@ import play.api.libs.json._
 
 object CreateBucketRequestMappers {
 
-  def createBucketRequestReads: Reads[CreateBucketRequest] = (
-    (JsPath \ "name").read[String] and
-      (JsPath \ "backend").read[String]
-    )(CreateBucketRequest.apply _)
+  def CreateBucketRequestFormat: OFormat[CreateBucketRequest] = (
+    (JsPath \ "name").format[String] and
+      (JsPath \ "backend").format[String]
+    )(CreateBucketRequest.apply, unlift(CreateBucketRequest.unapply))
 
-  def createBucketRequestWrites: Writes[CreateBucketRequest] = (
-    (JsPath \ "name").write[String] and
-      (JsPath \ "backend").write[String]
-    ) { cb => (cb.name, cb.backend) }
 }
