@@ -27,9 +27,7 @@ import scala.concurrent.Future
 /**
   * Created by johann on 11/07/17.
   */
-class FilterBeforeBodyParseAction(filter: (RequestHeader) => Option[Result]) extends ActionBuilder[Request] {
-
-//  def filter(rh: RequestHeader): Option[Result]
+case class FilterBeforeBodyParseAction(filter: (RequestHeader) => Option[Result]) extends ActionBuilder[Request] {
 
   override protected def composeParser[A](bodyParser: BodyParser[A]): BodyParser[A] = new BodyParser[A] {
     def apply(rh: RequestHeader): Accumulator[ByteString, Either[Result, A]] = {
