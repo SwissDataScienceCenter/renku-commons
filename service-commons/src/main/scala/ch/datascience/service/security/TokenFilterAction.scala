@@ -61,7 +61,6 @@ case class TokenFilterAction(verifier: JWTVerifier, realm: String, altVerifiers:
       case Some(header) =>  header match {
         case tokenRegexp(token) => Some(token)
         case _ => None
-        case _ => None
       }
       case None => None
     }
@@ -70,9 +69,9 @@ case class TokenFilterAction(verifier: JWTVerifier, realm: String, altVerifiers:
   protected lazy val tokenRegexp: Regex = "(?i)Bearer (.*)/i".r.anchored
 
   protected def makeUnauthorizedResponse(error: Option[String] = None, errorDescription: Option[String] = None): Result = {
-    val errorMsg = error.map(e => s", error=\"$e\"").getOrElse("")
-    val errorDescriptionMsg = errorDescription.map(e => s", error_description=\"$e\"").getOrElse("")
-    val challenge =  s"Bearer realm=\"$realm\"$errorMsg$errorDescriptionMsg"
+    val errorMsg = error.map(e => s""", error="$e"""").getOrElse("")
+    val errorDescriptionMsg = errorDescription.map(e => s""", error_description="$e"""").getOrElse("")
+    val challenge =  s"""Bearer realm="$realm"$errorMsg$errorDescriptionMsg"""
     Results.Unauthorized.withHeaders(("WWW-Authenticate", challenge))
   }
 
