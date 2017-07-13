@@ -21,6 +21,8 @@ tags:
   description: 'File explorer'
 - name: 'IO'
   description: 'Perform I/O operations'
+- name: 'Authorize'
+  description: 'Request access to file resources'
 paths:
   /explore/{bucket_id}:
     get:
@@ -45,6 +47,8 @@ paths:
           description: 'Ok'
         404:
           description: 'Bucket not found'
+
+
   /io/read:
     get:
       tags:
@@ -60,6 +64,7 @@ paths:
       responses:
         200:
           description: 'Successful read'
+
   /io/write:
     post:
       tags:
@@ -67,11 +72,15 @@ paths:
       summary: 'Write file'
       description: 'Read file specified in authorization bearer token'
       consumes:
-      - octet/steam
+      - application/octet-stream
+      - text/plain
       parameters:
       - name: Authorization
         in: header
-        description: 'Bearer token (from authorization request)'
+        description: |
+          Bearer token (from authorization request)
+
+          Note: any MIME type can be used
         required: true
         type: string
       - name: body
@@ -85,4 +94,34 @@ paths:
         200:
           description: 'Successful write'
 
-definitions: {}
+
+  /authorize/read:
+    post:
+      tags:
+      - 'Authorize'
+      summary: 'Request read access to a file'
+      description: 'Request read access to a file and retrieve access token for I/O calls'
+      parameters:
+      - name: body
+        in: body
+        description: 'Read file request object'
+        required: true
+        schema:
+          $ref: '#/definitions/ReadFileRequest'
+      - name: SDSC-Deployment-Id
+        in: header
+        description: 'Deployment id, passed if request made from deployed application'
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: ok
+
+definitions:
+  ReadFileRequest:
+    type: object
+    required: resourceId
+    properties:
+      resourceId:
+        type: integer
+        format: int64
