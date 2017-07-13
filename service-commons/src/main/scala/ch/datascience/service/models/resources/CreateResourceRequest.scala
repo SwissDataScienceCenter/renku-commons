@@ -19,10 +19,6 @@
 package ch.datascience.service.models.resources
 
 /**
-  * Created by jeberle on 09.06.17.
+  * Created by johann on 13/07/17.
   */
-case class WriteResourceRequest(resourceId: Long) {
-
-  def toResourceRequest: ResourceRequest = ResourceRequest(resourceId, ResourceScope.StorageWrite)
-
-}
+abstract class CreateResourceRequest(final val createPermissionHolder: Long)

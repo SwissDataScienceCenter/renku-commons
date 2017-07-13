@@ -25,13 +25,11 @@ import play.api.libs.json._
 
 object ReadResourceRequestMappers {
 
-  def readResourceRequestReads: Reads[ReadResourceRequest] = (
-    (JsPath \ "app_id").readNullable[Long] and
-      (JsPath \ "resource_id").read[Long]
-    )(ReadResourceRequest.apply _)
+  def ReadResourceRequestFormat: OFormat[ReadResourceRequest] = {
+    val reads = ((JsPath \ "resource_id").read[Long] and JsPath.read[JsObject]){ (id, _) => ReadResourceRequest(id) }
+    val writes = (JsPath \ "resource_id").write[Long].contramap(unlift(ReadResourceRequest.unapply))
 
-  def readResourceRequestWrites: Writes[ReadResourceRequest] = (
-    (JsPath \ "app_id").writeNullable[Long] and
-      (JsPath \ "resource_id").write[Long]
-    ) { rr => (rr.appId, rr.resourceId) }
+    JsPath.format[ReadResourceRequest](reads)(writes)
+  }
+
 }
