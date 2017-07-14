@@ -1,6 +1,6 @@
-package ch.datascience.service.models.resources.json
+package ch.datascience.service.models.resource.json
 
-import ch.datascience.service.models.resources.ResourceScope
+import ch.datascience.service.models.resource.ResourceScope
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
 
