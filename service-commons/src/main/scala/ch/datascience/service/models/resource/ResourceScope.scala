@@ -1,4 +1,4 @@
-package ch.datascience.service.models.resources
+package ch.datascience.service.models.resource
 
 /**
   * Created by johann on 13/07/17.
@@ -22,5 +22,7 @@ object ResourceScope {
   case object StorageWrite extends ResourceScope("storage:write")
 
   case object StorageCreate extends ResourceScope("storage:create")
+
+  case object BucketCreate extends ResourceScope("storage:bucket_create")
 
 }
