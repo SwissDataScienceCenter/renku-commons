@@ -16,13 +16,16 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.models.resources
+package ch.datascience.service.models.resource
 
 /**
-  * Created by jeberle on 09.06.17.
+  * Created by johann on 14/07/17.
   */
-case class WriteResourceRequest(resourceId: Long) {
+abstract class SingleScopeResourceAccessRequest(
+                                                 val resourceId: AccessRequest#PermissionHolderId,
+                                                 val scope: ResourceScope
+) extends ResourceAccessRequest.ToResourceAccessRequest {
 
-  def toResourceRequest: ResourceRequest = ResourceRequest(resourceId, ResourceScope.StorageWrite)
+  override def toResourceAccessRequest: ResourceAccessRequest = ResourceAccessRequest(resourceId, scope)
 
 }

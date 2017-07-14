@@ -16,20 +16,29 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.models.resources.json
+package ch.datascience.service.models.resource
 
-import ch.datascience.service.models.resources.WriteResourceRequest
-import play.api.libs.functional.syntax._
-import play.api.libs.json._
+/**
+  * Created by johann on 14/07/17.
+  */
+case class AccessRequest(
+  permissionHolderId: Option[AccessRequest#PermissionHolderId],
+  scopes: Set[ResourceScope]
+) {
 
+  type PermissionHolderId = Long
 
-object WriteResourceRequestMappers {
+}
 
-  def WriteResourceRequestFormat: OFormat[WriteResourceRequest] = {
-    val reads = ((JsPath \ "resource_id").read[Long] and JsPath.read[JsObject]){ (id, _) => WriteResourceRequest(id) }
-    val writes = (JsPath \ "resource_id").write[Long].contramap(unlift(WriteResourceRequest.unapply))
+object AccessRequest {
 
-    JsPath.format[WriteResourceRequest](reads)(writes)
+  def apply(
+    permissionHolderId: Option[AccessRequest#PermissionHolderId],
+    scopes: ResourceScope*
+  ): AccessRequest = AccessRequest(permissionHolderId, scopes.toSet)
+
+  trait ToAccessRequest {
+    def toAccessRequest: AccessRequest
   }
 
 }

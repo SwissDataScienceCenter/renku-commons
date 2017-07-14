@@ -16,9 +16,14 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.models.resources
+package ch.datascience.service.models.resource
 
 /**
   * Created by johann on 13/07/17.
   */
-abstract class CreateResourceRequest(final val createPermissionHolder: Long)
+case class CreateFileRequest(bucketId: AccessRequest#PermissionHolderId, fileName: String)
+  extends SingleScopeAccessRequest(permissionHolderId = Some(bucketId), scope = CreateFileRequest.scope)
+
+object CreateFileRequest {
+  lazy val scope: ResourceScope = ResourceScope.StorageCreate
+}

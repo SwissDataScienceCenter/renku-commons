@@ -16,15 +16,16 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.models.resources
+package ch.datascience.service.models.resource
+
+import play.api.libs.json.JsObject
 
 /**
   * Created by jeberle on 09.06.17.
   */
-case class ResourceRequest(resourceId: Long, scopes: Set[ResourceScope])
+case class CreateBucketRequest(name: String, backend: String, backendOptions: Option[JsObject])
+  extends SingleScopeAccessRequest(permissionHolderId = None, scope = CreateBucketRequest.scope)
 
-object ResourceRequest {
-
-  def apply(resourceId: Long, scopes: ResourceScope*): ResourceRequest = ResourceRequest(resourceId, scopes.toSet)
-
+object CreateBucketRequest {
+  lazy val scope: ResourceScope = ResourceScope.BucketCreate
 }

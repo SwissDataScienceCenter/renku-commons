@@ -16,27 +16,31 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.models.resources.json
-
-import ch.datascience.service.models.resources.ResourceScope
-import play.api.libs.json._
-import play.api.libs.functional.syntax._
-
-import scala.util.Try
+package ch.datascience.service.models.resource
 
 /**
   * Created by johann on 13/07/17.
   */
-object ResourceScopeMappers {
+sealed abstract class ResourceScope(val name: String)
 
-  def ResourceScopeFormat: Format[ResourceScope] = Format(ResourceScopeReads, ResourceScopeWrites)
+object ResourceScope {
 
-  def ResourceScopeReads: Reads[ResourceScope] = Reads { json =>
-    json.validate[String].flatMap { str =>
-      Try{ ResourceScope(str) }.map(s => JsSuccess(s)).recover { case e => JsError(e.getMessage) }.get
-    }
+  val scopes: Set[ResourceScope] = Set(StorageRead, StorageWrite, StorageCreate)
+
+  def valueOf(name: String): ResourceScope = ResourceScope.apply(name)
+
+  def apply(name: String): ResourceScope = name.toLowerCase match {
+    case StorageRead.name => StorageRead
+    case StorageWrite.name => StorageWrite
+    case StorageCreate.name => StorageCreate
   }
 
-  def ResourceScopeWrites: Writes[ResourceScope] = implicitly[Writes[String]].contramap(_.name)
+  case object StorageRead extends ResourceScope("storage:read")
+
+  case object StorageWrite extends ResourceScope("storage:write")
+
+  case object StorageCreate extends ResourceScope("storage:create")
+
+  case object BucketCreate extends ResourceScope("storage:bucket_create")
 
 }

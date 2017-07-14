@@ -16,20 +16,31 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.models.resources.json
+package ch.datascience.service.models.resource
 
-import ch.datascience.service.models.resources.ReadResourceRequest
-import play.api.libs.functional.syntax._
-import play.api.libs.json._
+/**
+  * Created by johann on 14/07/17.
+  */
+case class ResourceAccessRequest(
+  resourceId: AccessRequest#PermissionHolderId,
+  scopes: Set[ResourceScope]
+) extends AccessRequest.ToAccessRequest {
 
+  override def toAccessRequest: AccessRequest = AccessRequest(Some(resourceId), scopes)
 
-object ReadResourceRequestMappers {
+}
 
-  def ReadResourceRequestFormat: OFormat[ReadResourceRequest] = {
-    val reads = ((JsPath \ "resource_id").read[Long] and JsPath.read[JsObject]){ (id, _) => ReadResourceRequest(id) }
-    val writes = (JsPath \ "resource_id").write[Long].contramap(unlift(ReadResourceRequest.unapply))
+object ResourceAccessRequest {
 
-    JsPath.format[ReadResourceRequest](reads)(writes)
+  def apply(
+    resourceId: AccessRequest#PermissionHolderId,
+    scopes: ResourceScope*
+  ): ResourceAccessRequest = ResourceAccessRequest(resourceId, scopes.toSet)
+
+  trait ToResourceAccessRequest extends AccessRequest.ToAccessRequest {
+    def toResourceAccessRequest: ResourceAccessRequest
+
+    final def toAccessRequest: AccessRequest = toResourceAccessRequest.toAccessRequest
   }
 
 }

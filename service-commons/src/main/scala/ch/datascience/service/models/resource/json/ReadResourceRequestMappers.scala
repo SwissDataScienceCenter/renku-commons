@@ -16,20 +16,28 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.models.resources.json
+package ch.datascience.service.models.resource.json
 
-import ch.datascience.service.models.resources.CreateFileRequest
+import ch.datascience.service.models.resource.{ReadResourceRequest, ResourceScope}
+import play.api.data.validation.ValidationError
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
-/**
-  * Created by johann on 13/07/17.
-  */
-private[json] object CreateFileRequestMappers {
 
-  def CreateFileRequestFormat: OFormat[CreateFileRequest] = (
-    (JsPath \ "bucket_id").format[Long] and
-      (JsPath \ "file_name").format[String]
-    )(CreateFileRequest.apply, unlift(CreateFileRequest.unapply))
+object ReadResourceRequestMappers {
+
+  def ReadResourceRequestFormat: OFormat[ReadResourceRequest] = (
+    (JsPath \ "scope").format[ResourceScope](Reads.filter[ResourceScope](ValidationError("wring scope"))(_ == ReadResourceRequest.scope)) and
+      (JsPath \ "resource_id").format[Long]
+    )(read, write)
+
+  private[this] def read(
+    scope: ResourceScope,
+    resourceId: Long
+  ): ReadResourceRequest = ReadResourceRequest(resourceId)
+
+  private[this] def write(req: ReadResourceRequest): (ResourceScope, Long) = {
+    (req.scope, req.resourceId)
+  }
 
 }

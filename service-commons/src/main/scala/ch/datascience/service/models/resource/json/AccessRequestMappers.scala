@@ -16,13 +16,20 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.models.resources
+package ch.datascience.service.models.resource.json
+
+import ch.datascience.service.models.resource.{AccessRequest, ResourceScope}
+import play.api.libs.functional.syntax._
+import play.api.libs.json._
 
 /**
-  * Created by jeberle on 09.06.17.
+  * Created by johann on 14/07/17.
   */
-case class ReadResourceRequest(resourceId: Long) {
+object AccessRequestMappers {
 
-  def toResourceRequest: ResourceRequest = ResourceRequest(resourceId, ResourceScope.StorageRead)
+  def AccessRequestFormat: OFormat[AccessRequest] = (
+    (JsPath \ "permission_holder_id").formatNullable[AccessRequest#PermissionHolderId] and
+      (JsPath \ "scopes").format[Seq[ResourceScope]]
+  )({ (i, s) => AccessRequest(i, s: _*) }, { req => (req.permissionHolderId, req.scopes.toSeq) })
 
 }

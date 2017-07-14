@@ -16,25 +16,14 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.models.resources.json
+package ch.datascience.service.models.resource
 
-import ch.datascience.service.models.resources.{ResourceRequest, ResourceScope}
-import play.api.libs.functional.syntax._
-import play.api.libs.json._
+/**
+  * Created by jeberle on 09.06.17.
+  */
+case class ReadResourceRequest(override val resourceId: AccessRequest#PermissionHolderId)
+  extends SingleScopeResourceAccessRequest(resourceId, scope = ReadResourceRequest.scope)
 
-
-object ResourceRequestMappers {
-
-  def ResourceRequestFormat: OFormat[ResourceRequest] = (
-    (JsPath \ "resource_id").format[Long] and
-      (JsPath \ "scopes").format[Set[ResourceScope]](scopesFormat)
-  )(ResourceRequest.apply, unlift(ResourceRequest.unapply))
-
-  private[this] def scopesFormat: Format[Set[ResourceScope]] = {
-    implicitly[Format[Seq[ResourceScope]]].inmap(
-      _.toSet,
-      _.toSeq
-    )
-  }
-
+object ReadResourceRequest {
+  lazy val scope: ResourceScope = ResourceScope.StorageRead
 }
