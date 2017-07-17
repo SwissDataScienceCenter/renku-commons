@@ -16,27 +16,24 @@
  * limitations under the License.
  */
 
-import javax.inject.Inject
+package ch.datascience.service.security
 
-import org.pac4j.play.filters.SecurityFilter
-import play.api.http.DefaultHttpFilters
-import play.filters.cors.CORSFilter
-import play.filters.headers.SecurityHeadersFilter
-import play.filters.hosts.AllowedHostsFilter
+import java.security.KeyFactory
+import java.security.interfaces.RSAPrivateKey
+import java.security.spec.PKCS8EncodedKeySpec
+import java.util.Base64
 
 /**
- * Add the following filters by default to all projects
- * 
- * https://www.playframework.com/documentation/latest/ScalaCsrf 
- * https://www.playframework.com/documentation/latest/AllowedHostsFilter
- * https://www.playframework.com/documentation/latest/SecurityHeaders
- */
-class Filters @Inject() (
-  allowedHostsFilter: AllowedHostsFilter,
-  corsFilter: CORSFilter,
-  securityHeadersFilter: SecurityHeadersFilter
-) extends DefaultHttpFilters(
-  allowedHostsFilter,
-  corsFilter,
-  securityHeadersFilter
-)
+  * Created by johann on 14/07/17.
+  */
+object PrivateKeyReader {
+
+  def readRSAPrivateKey(encodedKey: String): RSAPrivateKey = {
+    val decoded = Base64.getDecoder.decode(encodedKey)
+    val spec = new PKCS8EncodedKeySpec(decoded)
+    val factory = KeyFactory.getInstance("RSA")
+    val key = factory.generatePrivate(spec)
+    key.asInstanceOf[RSAPrivateKey]
+  }
+
+}
