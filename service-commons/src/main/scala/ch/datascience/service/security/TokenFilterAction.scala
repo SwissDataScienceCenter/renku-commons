@@ -36,11 +36,12 @@ case class TokenFilterAction(verifier: JWTVerifier, realm: String, altVerifiers:
     with AbstractFilterBeforeBodyParseAction {
 
   protected def transform[A](request: Request[A]): Future[RequestWithToken[A]] = Future.successful {
+    require(request.tags.get("VERIFIED_TOKEN").contains(extractToken(request.headers).get))
     val token = JWT.decode(extractToken(request.headers).get)
     new RequestWithToken[A](token, request)
   }
 
-  def filter(rh: RequestHeader): Option[Result] = {
+  def filter(rh: RequestHeader): Either[Result, RequestHeader] = {
     extractToken(rh.headers) match {
       case Some(token) =>
         val t0 = Try { verifier.verify(token) }
@@ -51,8 +52,8 @@ case class TokenFilterAction(verifier: JWTVerifier, realm: String, altVerifiers:
           case e: SignatureVerificationException => Some(makeUnauthorizedResponse(Some("invalid_token"), Some("Token signature invalid")))
           case e: TokenExpiredException => Some(makeUnauthorizedResponse(Some("invalid_token"), Some("Token expired")))
           case e: InvalidClaimException => Some(makeUnauthorizedResponse(Some("invalid_token"), Some("Claims do not match verifier")))
-        }.get
-      case None => Some(makeUnauthorizedResponse())
+        }.get.toLeft(rh.withTag("VERIFIED_TOKEN", token))
+      case None => Left(makeUnauthorizedResponse())
     }
   }
 
