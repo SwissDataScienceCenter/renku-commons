@@ -1,6 +1,6 @@
 package ch.datascience.service.models.resource.json
 
-import ch.datascience.service.models.resource.{CreateBucketRequest, ResourceScope}
+import ch.datascience.service.models.resource.{CreateBucketRequest, ScopeQualifier}
 import play.api.data.validation.ValidationError
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
@@ -9,21 +9,23 @@ import play.api.libs.json._
 object CreateBucketRequestMappers {
 
   def CreateBucketRequestFormat: OFormat[CreateBucketRequest] = (
-    (JsPath \ "scope").format[ResourceScope](Reads.filter[ResourceScope](ValidationError("wring scope"))(_ == CreateBucketRequest.scope)) and
+    (JsPath \ "scope").format[ScopeQualifier](Reads.filter[ScopeQualifier](ValidationError("wring scope"))(_ == CreateBucketRequest.scope)) and
       (JsPath \ "name").format[String] and
       (JsPath \ "backend").format[String] and
-      (JsPath \ "options").formatNullable[JsObject]
+      (JsPath \ "options").formatNullable[JsObject] and
+      (JsPath \ "extra_claims").formatNullable[JsObject]
     ) (read, write)
 
   private[this] def read(
-    scope: ResourceScope,
+    scope: ScopeQualifier,
     name: String,
     backend: String,
-    options: Option[JsObject]
-  ): CreateBucketRequest = CreateBucketRequest(name, backend, options)
+    options: Option[JsObject],
+    extraClaims: Option[JsObject]
+  ): CreateBucketRequest = CreateBucketRequest(name, backend, options, extraClaims)
 
-  private[this] def write(req: CreateBucketRequest): (ResourceScope, String, String, Option[JsObject]) = {
-    (req.scope, req.name, req.backend, req.backendOptions)
+  private[this] def write(req: CreateBucketRequest): (ScopeQualifier, String, String, Option[JsObject], Option[JsObject]) = {
+    (req.scope, req.name, req.backend, req.backendOptions, req.extraClaims)
   }
 
 }
