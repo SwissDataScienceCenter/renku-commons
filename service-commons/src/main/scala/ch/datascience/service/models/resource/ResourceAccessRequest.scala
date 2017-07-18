@@ -18,24 +18,22 @@
 
 package ch.datascience.service.models.resource
 
+import play.api.libs.json.JsObject
+
 /**
   * Created by johann on 14/07/17.
   */
 case class ResourceAccessRequest(
   resourceId: AccessRequest#PermissionHolderId,
-  scopes: Set[ResourceScope]
+  scope: Set[ScopeQualifier],
+  extraClaims: Option[JsObject]
 ) extends AccessRequest.ToAccessRequest {
 
-  override def toAccessRequest: AccessRequest = AccessRequest(Some(resourceId), scopes)
+  override def toAccessRequest: AccessRequest = AccessRequest(Some(resourceId), scope, extraClaims)
 
 }
 
 object ResourceAccessRequest {
-
-  def apply(
-    resourceId: AccessRequest#PermissionHolderId,
-    scopes: ResourceScope*
-  ): ResourceAccessRequest = ResourceAccessRequest(resourceId, scopes.toSet)
 
   trait ToResourceAccessRequest extends AccessRequest.ToAccessRequest {
     def toResourceAccessRequest: ResourceAccessRequest

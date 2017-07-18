@@ -32,6 +32,6 @@ package object json {
   implicit lazy val ResourceAccessRequestFormat: OFormat[ResourceAccessRequest] = ResourceAccessRequestMappers.ResourceAccessRequestFormat
   implicit lazy val WriteResourceRequestFormat: OFormat[WriteResourceRequest] = WriteResourceRequestMappers.WriteResourceRequestFormat
 
-  implicit lazy val ResourceScopeFormat: Format[ResourceScope] = ResourceScopeMappers.ResourceScopeFormat
+  implicit lazy val ScopeQualifierFormat: Format[ScopeQualifier] = ScopeQualifierMappers.ScopeQualifierFormat
 
 }

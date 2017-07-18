@@ -16,19 +16,13 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.models.resource.json
+package ch.datascience.service.models
 
-import ch.datascience.service.models.resource.{ResourceAccessRequest, ScopeQualifier}
-import play.api.libs.functional.syntax._
-import play.api.libs.json._
+/**
+  * Created by johann on 18/07/17.
+  */
+package object resource {
 
-
-object ResourceAccessRequestMappers {
-
-  def ResourceAccessRequestFormat: OFormat[ResourceAccessRequest] = (
-    (JsPath \ "resource_id").format[Long] and
-      (JsPath \ "scope").format[Seq[ScopeQualifier]] and
-      (JsPath \ "extra_claims").formatNullable[JsObject]
-  )({ (i, s, e) => ResourceAccessRequest(i, s.toSet, e) }, { req => (req.resourceId, req.scope.toSeq, req.extraClaims) })
+  type Scope = Set[ScopeQualifier]
 
 }
