@@ -4,12 +4,15 @@
   "description": "platform services API specs",
   "private": true,
   "scripts": {
-    "dev": "http-server -c-1 ."
+    "dev": "http-server -c-1 .",
+    "dist": "node dist.js"
   },
   "devDependencies": {
     "http-server": "^0.10.0"
   },
   "dependencies": {
+    "commander": "^2.11.0",
+    "js-yaml": "^3.9.0",
     "swagger-ui-dist": "^3.0.17"
   }
 }
