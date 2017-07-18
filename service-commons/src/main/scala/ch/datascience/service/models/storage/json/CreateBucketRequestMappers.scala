@@ -16,18 +16,20 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.models.resource
+package ch.datascience.service.models.storage.json
 
-import play.api.libs.json.JsObject
+import ch.datascience.service.models.resource.json.RequestTypeMappers
+import ch.datascience.service.models.storage.CreateBucketRequest
+import play.api.libs.functional.syntax._
+import play.api.libs.json._
 
-/**
-  * Created by jeberle on 09.06.17.
-  */
-case class ReadResourceRequest(
-  override val resourceId: AccessRequest#PermissionHolderId,
-  override val extraClaims: Option[JsObject]
-) extends SingleScopeResourceAccessRequest(resourceId, scope = ReadResourceRequest.scope, extraClaims = extraClaims)
 
-object ReadResourceRequest {
-  lazy val scope: ScopeQualifier = ScopeQualifier.StorageRead
+object CreateBucketRequestMappers {
+
+  def CreateBucketRequestFormat: OFormat[CreateBucketRequest] = RequestTypeMappers.format("create_bucket")((
+    (JsPath \ "name").format[String] and
+      (JsPath \ "backend").format[String] and
+      (JsPath \ "options").formatNullable[JsObject]
+  )(CreateBucketRequest.apply, unlift(CreateBucketRequest.unapply)))
+
 }

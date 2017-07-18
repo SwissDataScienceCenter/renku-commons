@@ -16,19 +16,26 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.models.resource
+package ch.datascience.service.models.storage
 
+import ch.datascience.service.models.resource.{ScopeQualifier, SingleScopeAccessRequest}
 import play.api.libs.json.JsObject
 
 /**
-  * Created by johann on 13/07/17.
+  * Created by jeberle on 09.06.17.
   */
-case class CreateFileRequest(
-  bucketId: AccessRequest#PermissionHolderId,
-  fileName: String,
-  override val extraClaims: Option[JsObject]
-) extends SingleScopeAccessRequest(permissionHolderId = Some(bucketId), scope = CreateFileRequest.scope, extraClaims = extraClaims)
+case class CreateBucketRequest(
+  name: String,
+  backend: String,
+  backendOptions: Option[JsObject]
+) extends SingleScopeAccessRequest.ToSingleScopeAccessRequest {
 
-object CreateFileRequest {
-  lazy val scope: ScopeQualifier = ScopeQualifier.StorageCreate
+  def toAccessRequest(extraClaims: Option[JsObject]): SingleScopeAccessRequest = {
+    SingleScopeAccessRequest(permissionHolderId = None, CreateBucketRequest.scope, extraClaims)
+  }
+
+}
+
+object CreateBucketRequest {
+  lazy val scope: ScopeQualifier = ScopeQualifier.BucketCreate
 }

@@ -16,19 +16,18 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.models.resource.json
+package ch.datascience.service.models.storage.json
 
-import ch.datascience.service.models.resource.{ResourceAccessRequest, ScopeQualifier}
+import ch.datascience.service.models.resource.json.RequestTypeMappers
+import ch.datascience.service.models.storage.ReadResourceRequest
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
 
-object ResourceAccessRequestMappers {
+object ReadResourceRequestMappers {
 
-  def ResourceAccessRequestFormat: OFormat[ResourceAccessRequest] = (
-    (JsPath \ "resource_id").format[Long] and
-      (JsPath \ "scope").format[Seq[ScopeQualifier]] and
-      (JsPath \ "extra_claims").formatNullable[JsObject]
-  )({ (i, s, e) => ResourceAccessRequest(i, s.toSet, e) }, { req => (req.resourceId, req.scope.toSeq, req.extraClaims) })
+  def ReadResourceRequestFormat: OFormat[ReadResourceRequest] = RequestTypeMappers.format("read_file")(
+    (JsPath \ "resource_id").format[Long].inmap(ReadResourceRequest.apply, unlift(ReadResourceRequest.unapply))
+  )
 
 }
