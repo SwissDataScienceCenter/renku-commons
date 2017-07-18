@@ -49,7 +49,7 @@ case class TokenFilterAction(verifier: JWTVerifier, realm: String, altVerifiers:
     }
   }
 
-  protected lazy val tokenRegexp: Regex = "(?i)Bearer (.*)/i".r.anchored
+  protected lazy val tokenRegexp: Regex = "(?i)Bearer (.*)".r.anchored
 
   protected def makeUnauthorizedResponse(error: Option[String] = None, errorDescription: Option[String] = None): Result = {
     val errorMsg = error.map(e => s""", error="$e"""").getOrElse("")
