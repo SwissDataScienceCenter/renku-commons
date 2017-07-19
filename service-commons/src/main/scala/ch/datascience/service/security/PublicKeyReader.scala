@@ -39,11 +39,11 @@ object PublicKeyReader {
       case Some(encodedKey) => Future.successful( readRSAPublicKey(encodedKey) )
       case None =>
         val strict = config.getBoolean("strict").getOrElse(true)
-        val provider = config.getString("public-key-provider")
+        val provider = config.getConfig("public-key-provider")
         if (strict)
           Future.failed( new IllegalArgumentException("Bad config: strict mode but no key given") )
-        else if (provider.nonEmpty)
-          fetchRSAPublicKey(provider.get)
+        else if (provider.nonEmpty && provider.get.getString("type").contains("url") && provider.get.getString("url").nonEmpty)
+          fetchRSAPublicKey(provider.get.getString("url").get)
         else
           Future.failed( new IllegalArgumentException("Bad config: no key or provider") )
     }
