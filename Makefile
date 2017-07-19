@@ -7,7 +7,7 @@ sbt_graph_services += graph-mutation-service
 sbt_graph_services += graph-navigation-service
 sbt_graph_services += graph-init
 
-sbt_platform_services += resources-manager-service
+sbt_platform_services += resource-manager-service
 # Not ready yet
 # sbt_platform_services += storage-service
 # sbt_platform_services += deploy-service
