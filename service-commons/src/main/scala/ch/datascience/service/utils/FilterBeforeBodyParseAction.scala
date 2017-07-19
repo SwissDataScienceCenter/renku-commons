@@ -13,13 +13,17 @@ trait AbstractFilterBeforeBodyParseAction extends ActionBuilder[Request] {
 
   protected def filter(rh: RequestHeader): Either[Result, RequestHeader]
 
-  override protected def composeParser[A](bodyParser: BodyParser[A]): BodyParser[A] = new BodyParser[A] {
-    def apply(rh: RequestHeader): Accumulator[ByteString, Either[Result, A]] = {
-      filter(rh) match {
-        case Left(result) => makeError[A](result).apply(rh)
-        case Right(newRH) => bodyParser(newRH)
-      }
+  override protected def composeAction[A](action: Action[A]): Action[A] = new Action[A] {
+
+    override def apply(rh: RequestHeader): Accumulator[ByteString, Result] = filter(rh) match {
+      case Left(result) => Accumulator.done(result)
+      case Right(newRH) => action.apply(newRH)
     }
+
+    def apply(request: Request[A]): Future[Result] = action.apply(request)
+
+    def parser: BodyParser[A] = action.parser
+
   }
 
   private[this] def makeError[A](result: Result): BodyParser[A] = BodyParsers.parse.error( Future.successful( result ) )
