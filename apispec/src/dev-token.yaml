@@ -54,7 +54,7 @@ paths:
       - name: client_secret
         in: formData
         type: string
-        example: '90e2b9a4-ddda-4588-ab64-33dab06389a1'
+        example: '5294a18e-e784-4e39-a927-ce816c91c83e'
       responses:
         200:
           description: 'ok'

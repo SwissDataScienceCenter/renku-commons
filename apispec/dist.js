@@ -8,7 +8,8 @@ const yaml = require('js-yaml')
 
 commander
   .option('-H, --host <host>', 'Replace host by this value')
-  .option('-o, --output <dir>', 'Replace host by this value')
+  .option('-o, --output <dir>', 'Output location (default: dist)')
+  .option('--http', 'Switch API scheme to http')
   .parse(process.argv)
 
 const output = commander.output || 'dist'
@@ -57,6 +58,9 @@ exec(`mkdir -p ${output}`, err => {
             const newPort = oldPort ? oldPort : ( newPortMatch ? newPortMatch[2] : oldPort )
             const newHostFull = newPort ? `${newHost}:${newPort}` : newHost
             content['host'] = newHostFull
+          }
+          if (commander.http) {
+            content['schemes'] = ['http']
           }
           const result = yaml.dump(content)
           fs.writeFile(`${output}/src/${file}`, result, err => {
