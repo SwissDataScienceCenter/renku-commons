@@ -1,13 +1,26 @@
 package ch.datascience.service.models.resource
 
+import play.api.libs.json.JsObject
+
 /**
   * Created by johann on 14/07/17.
   */
-abstract class SingleScopeResourceAccessRequest(
-                                                 val resourceId: AccessRequest#PermissionHolderId,
-                                                 val scope: ResourceScope
-) extends ResourceAccessRequest.ToResourceAccessRequest {
+class SingleScopeResourceAccessRequest(
+  resourceId: AccessRequest#PermissionHolderId,
+  scope: ScopeQualifier,
+  extraClaims: Option[JsObject]
+) extends ResourceAccessRequest(resourceId, Set(scope), extraClaims)
 
-  override def toResourceAccessRequest: ResourceAccessRequest = ResourceAccessRequest(resourceId, scope)
+object SingleScopeResourceAccessRequest {
+
+  def apply(
+    resourceId: AccessRequest#PermissionHolderId,
+    scope: ScopeQualifier,
+    extraClaims: Option[JsObject]
+  ): SingleScopeResourceAccessRequest = new SingleScopeResourceAccessRequest(resourceId, scope, extraClaims)
+
+  trait ToSingleScopeResourceAccessRequest extends ResourceAccessRequest.ToResourceAccessRequest {
+    def toAccessRequest(extraClaims: Option[JsObject]): SingleScopeResourceAccessRequest
+  }
 
 }

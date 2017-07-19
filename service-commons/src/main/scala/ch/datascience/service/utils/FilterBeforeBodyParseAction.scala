@@ -11,24 +11,28 @@ import scala.concurrent.Future
   */
 trait AbstractFilterBeforeBodyParseAction extends ActionBuilder[Request] {
 
-  protected def filter(rh: RequestHeader): Option[Result]
+  protected def filter(rh: RequestHeader): Either[Result, RequestHeader]
 
-  override protected def composeParser[A](bodyParser: BodyParser[A]): BodyParser[A] = new BodyParser[A] {
-    def apply(rh: RequestHeader): Accumulator[ByteString, Either[Result, A]] = {
-      filter(rh) match {
-        case Some(result) => makeError[A](result).apply(rh)
-        case None => bodyParser(rh)
-      }
+  override protected def composeAction[A](action: Action[A]): Action[A] = new Action[A] {
+
+    override def apply(rh: RequestHeader): Accumulator[ByteString, Result] = filter(rh) match {
+      case Left(result) => Accumulator.done(result)
+      case Right(newRH) => action.apply(newRH)
     }
+
+    def apply(request: Request[A]): Future[Result] = action.apply(request)
+
+    def parser: BodyParser[A] = action.parser
+
   }
 
   private[this] def makeError[A](result: Result): BodyParser[A] = BodyParsers.parse.error( Future.successful( result ) )
 
 }
 
-case class FilterBeforeBodyParseAction(filter: (RequestHeader) => Option[Result]) extends AbstractFilterBeforeBodyParseAction {
+case class FilterBeforeBodyParseAction(filter: (RequestHeader) => Either[Result, RequestHeader]) extends AbstractFilterBeforeBodyParseAction {
 
-  protected def filter(rh: RequestHeader): Option[Result] = filter.apply(rh)
+  protected def filter(rh: RequestHeader): Either[Result, RequestHeader] = filter.apply(rh)
 
   def invokeBlock[A](request: Request[A], block: (Request[A]) => Future[Result]): Future[Result] = block(request)
 
