@@ -31,7 +31,7 @@ paths:
         description: 'Resource access request object'
         required: true
         schema:
-          $ref: '#/definitions/ResourceAcessRequest'
+          $ref: '#/definitions/AcessRequest'
       - in: header
         name: Authorization
         description: 'Bearer token'
@@ -43,20 +43,26 @@ paths:
         401:
           description: 'Authentication required'
 definitions:
-  ResourceAcessRequest:
+  AcessRequest:
     type: object
-    required: []
+    required:
+    - scope
     properties:
-      resourceId:
+      permission_holder_id:
         type: integer
         format: int64
       scope:
         type: array
         items:
-          $ref: '#/definitions/Scope'
-  Scope:
+          $ref: '#/definitions/ScopeQualifier'
+      extra_claims:
+        type: object
+        description: Custom claims added by the requesting service
+  ScopeQualifier:
     type: string
     enum:
-      - 'access:read'
-      - 'access:write'
-    title: Scope
+    - 'storage:read'
+    - 'storage:write'
+    - 'storage:create'
+    - 'storage:bucket_create'
+    title: ScopeQualifier
