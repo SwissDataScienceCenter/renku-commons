@@ -47,7 +47,82 @@ paths:
           description: 'Ok'
         404:
           description: 'Bucket not found'
-
+  /explore/file/{file_id}:
+    get:
+      tags:
+      - 'Explorer'
+      summary: 'File metadata'
+      description: 'Access file metadata'
+      parameters:
+      - name: Authorization
+        in: header
+        description: 'Bearer token'
+        required: true
+        type: string
+      - name: file_id
+        in: path
+        description: 'File graph id'
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: 'Ok'
+        404:
+          description: 'File not found'
+  /explore/{bucket_id}/files:
+    get:
+      tags:
+      - 'Explorer'
+      summary: 'Bucket files'
+      description: 'List all files in a bucket'
+      parameters:
+      - name: Authorization
+        in: header
+        description: 'Bearer token'
+        required: true
+        type: string
+      - name: bucket_id
+        in: path
+        description: 'Bucket graph id'
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: 'Ok'
+        404:
+          description: 'Bucket not found'
+  /explore/list:
+    get:
+      tags:
+      - 'Explorer'
+      summary: 'Bucket list'
+      description: 'List all available buckets'
+      parameters:
+      - name: Authorization
+        in: header
+        description: 'Bearer token'
+        required: true
+        type: string
+      responses:
+        200:
+          description: 'Ok'
+  /explore/backends:
+    get:
+      tags:
+      - 'Explorer'
+      summary: 'Backend list'
+      description: 'List all available backends'
+      parameters:
+      - name: Authorization
+        in: header
+        description: 'Bearer token'
+        required: true
+        type: string
+      responses:
+        200:
+          description: 'Ok'
 
   /io/read:
     get:
@@ -122,6 +197,87 @@ paths:
         200:
           description: ok
 
+  /authorize/write:
+    post:
+      tags:
+      - 'Authorize'
+      summary: 'Request write access to a file'
+      description: 'Request write access to a file and retrieve access token for I/O calls'
+      parameters:
+      - name: body
+        in: body
+        description: 'Write file request object'
+        required: true
+        schema:
+          $ref: '#/definitions/WriteFileRequest'
+      - name: SDSC-Deployment-Id
+        in: header
+        description: 'Deployment id, passed if request made from deployed application'
+        type: integer
+        format: int64
+      - name: Authorization
+        in: header
+        description: 'Bearer token (from authorization request)'
+        required: true
+        type: string
+      responses:
+        200:
+          description: ok
+
+  /authorize/create_bucket:
+    post:
+      tags:
+      - 'Authorize'
+      summary: 'Request creation of a bucket'
+      description: 'Request the creation of a new bucket on the given backend'
+      parameters:
+      - name: body
+        in: body
+        description: 'Create bucket request object'
+        required: true
+        schema:
+          $ref: '#/definitions/CreateBucketRequest'
+      - name: SDSC-Deployment-Id
+        in: header
+        description: 'Deployment id, passed if request made from deployed application'
+        type: integer
+        format: int64
+      - name: Authorization
+        in: header
+        description: 'Bearer token (from authorization request)'
+        required: true
+        type: string
+      responses:
+        200:
+          description: ok
+
+  /authorize/create_file:
+    post:
+      tags:
+      - 'Authorize'
+      summary: 'Request creation of a new file'
+      description: 'Request the creation of a new file in the given bucket and retrieve access token for I/O calls'
+      parameters:
+      - name: body
+        in: body
+        description: 'Create file request object'
+        required: true
+        schema:
+          $ref: '#/definitions/CreateFileRequest'
+      - name: SDSC-Deployment-Id
+        in: header
+        description: 'Deployment id, passed if request made from deployed application'
+        type: integer
+        format: int64
+      - name: Authorization
+        in: header
+        description: 'Bearer token (from authorization request)'
+        required: true
+        type: string
+      responses:
+        200:
+          description: ok
+
 definitions:
   ReadFileRequest:
     type: object
@@ -130,3 +286,31 @@ definitions:
       resourceId:
         type: integer
         format: int64
+  WriteFileRequest:
+    type: object
+    required: resourceId
+    properties:
+      resourceId:
+        type: integer
+        format: int64
+  CreateBucketRequest:
+    type: object
+    required:
+      - name
+      - backend
+    properties:
+      name:
+        type: string
+      backend:
+        type: string
+  CreateFileRequest:
+    type: object
+    required:
+      - bucketId
+      - filename
+    properties:
+      bucketId:
+        type: integer
+        format: int64
+      filename:
+        type: string
