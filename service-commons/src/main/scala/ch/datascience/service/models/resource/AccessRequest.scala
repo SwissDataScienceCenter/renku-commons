@@ -18,12 +18,15 @@
 
 package ch.datascience.service.models.resource
 
+import play.api.libs.json.JsObject
+
 /**
   * Created by johann on 14/07/17.
   */
 case class AccessRequest(
   permissionHolderId: Option[AccessRequest#PermissionHolderId],
-  scopes: Set[ResourceScope]
+  scope: Set[ScopeQualifier],
+  extraClaims: Option[JsObject]
 ) {
 
   type PermissionHolderId = Long
@@ -32,13 +35,8 @@ case class AccessRequest(
 
 object AccessRequest {
 
-  def apply(
-    permissionHolderId: Option[AccessRequest#PermissionHolderId],
-    scopes: ResourceScope*
-  ): AccessRequest = AccessRequest(permissionHolderId, scopes.toSet)
-
   trait ToAccessRequest {
-    def toAccessRequest: AccessRequest
+    def toAccessRequest(extraClaims: Option[JsObject]): AccessRequest
   }
 
 }

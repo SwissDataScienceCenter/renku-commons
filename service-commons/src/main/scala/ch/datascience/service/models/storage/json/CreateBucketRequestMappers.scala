@@ -16,28 +16,20 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.models.resource.json
+package ch.datascience.service.models.storage.json
 
-import ch.datascience.service.models.resource.{ReadResourceRequest, ResourceScope}
-import play.api.data.validation.ValidationError
+import ch.datascience.service.models.resource.json.RequestTypeMappers
+import ch.datascience.service.models.storage.CreateBucketRequest
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
 
-object ReadResourceRequestMappers {
+object CreateBucketRequestMappers {
 
-  def ReadResourceRequestFormat: OFormat[ReadResourceRequest] = (
-    (JsPath \ "scope").format[ResourceScope](Reads.filter[ResourceScope](ValidationError("wring scope"))(_ == ReadResourceRequest.scope)) and
-      (JsPath \ "resource_id").format[Long]
-    )(read, write)
-
-  private[this] def read(
-    scope: ResourceScope,
-    resourceId: Long
-  ): ReadResourceRequest = ReadResourceRequest(resourceId)
-
-  private[this] def write(req: ReadResourceRequest): (ResourceScope, Long) = {
-    (req.scope, req.resourceId)
-  }
+  def CreateBucketRequestFormat: OFormat[CreateBucketRequest] = RequestTypeMappers.format("create_bucket")((
+    (JsPath \ "name").format[String] and
+      (JsPath \ "backend").format[String] and
+      (JsPath \ "options").formatNullable[JsObject]
+  )(CreateBucketRequest.apply, unlift(CreateBucketRequest.unapply)))
 
 }

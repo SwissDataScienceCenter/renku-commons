@@ -16,27 +16,21 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.models.resource.json
+package ch.datascience.service.security
 
-import ch.datascience.service.models.resource.ResourceScope
-import play.api.libs.json._
-import play.api.libs.functional.syntax._
+import play.api.mvc.ActionTransformer
 
+import scala.concurrent.Future
 import scala.util.Try
 
 /**
-  * Created by johann on 13/07/17.
+  * Created by johann on 18/07/17.
   */
-object ResourceScopeMappers {
+object ProfileAction extends ActionTransformer[RequestWithToken, RequestWithProfile] {
 
-  def ResourceScopeFormat: Format[ResourceScope] = Format(ResourceScopeReads, ResourceScopeWrites)
-
-  def ResourceScopeReads: Reads[ResourceScope] = Reads { json =>
-    json.validate[String].flatMap { str =>
-      Try{ ResourceScope(str) }.map(s => JsSuccess(s)).recover { case e => JsError(e.getMessage) }.get
-    }
+  protected def transform[A](request: RequestWithToken[A]): Future[RequestWithProfile[A]] = {
+    val executionId = request.headers.get("SDSC-EXECUTION-ID").map(x => Try { Some(x.toLong) }).flatMap(_.getOrElse(None))
+    Future.successful( new RequestWithProfile[A](request.token, executionId, request) )
   }
-
-  def ResourceScopeWrites: Writes[ResourceScope] = implicitly[Writes[String]].contramap(_.name)
 
 }

@@ -16,14 +16,27 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.models.resource
+package ch.datascience.service.models.resource.json
+
+import ch.datascience.service.models.resource.ScopeQualifier
+import play.api.libs.json._
+import play.api.libs.functional.syntax._
+
+import scala.util.Try
 
 /**
-  * Created by jeberle on 09.06.17.
+  * Created by johann on 13/07/17.
   */
-case class ReadResourceRequest(override val resourceId: AccessRequest#PermissionHolderId)
-  extends SingleScopeResourceAccessRequest(resourceId, scope = ReadResourceRequest.scope)
+object ScopeQualifierMappers {
 
-object ReadResourceRequest {
-  lazy val scope: ResourceScope = ResourceScope.StorageRead
+  def ScopeQualifierFormat: Format[ScopeQualifier] = Format(ScopeQualifierReads, ScopeQualifierWrites)
+
+  def ScopeQualifierReads: Reads[ScopeQualifier] = Reads { json =>
+    json.validate[String].flatMap { str =>
+      Try{ ScopeQualifier(str) }.map(s => JsSuccess(s)).recover { case e => JsError(e.getMessage) }.get
+    }
+  }
+
+  def ScopeQualifierWrites: Writes[ScopeQualifier] = implicitly[Writes[String]].contramap(_.name)
+
 }

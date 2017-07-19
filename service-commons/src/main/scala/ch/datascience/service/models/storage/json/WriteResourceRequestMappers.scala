@@ -16,17 +16,18 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.models.resource
+package ch.datascience.service.models.storage.json
 
-import play.api.libs.json.{Format, OFormat}
+import ch.datascience.service.models.resource.json.RequestTypeMappers
+import ch.datascience.service.models.storage.WriteResourceRequest
+import play.api.libs.functional.syntax._
+import play.api.libs.json._
 
-/**
-  * Created by johann on 25/04/17.
-  */
-package object json {
 
-  implicit lazy val AccessRequestFormat: OFormat[AccessRequest] = AccessRequestMappers.AccessRequestFormat
+object WriteResourceRequestMappers {
 
-  implicit lazy val ScopeQualifierFormat: Format[ScopeQualifier] = ScopeQualifierMappers.ScopeQualifierFormat
+  def WriteResourceRequestFormat: OFormat[WriteResourceRequest] = RequestTypeMappers.format("write_file")(
+    (JsPath \ "resource_id").format[Long].inmap(WriteResourceRequest.apply, unlift(WriteResourceRequest.unapply))
+  )
 
 }

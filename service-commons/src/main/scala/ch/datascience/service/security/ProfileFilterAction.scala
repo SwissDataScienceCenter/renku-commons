@@ -16,17 +16,28 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.models.resource
+package ch.datascience.service.security
 
-import play.api.libs.json.{Format, OFormat}
+import ch.datascience.service.utils.AbstractFilterBeforeBodyParseAction
+import com.auth0.jwt.exceptions._
+import com.auth0.jwt.{JWT, JWTVerifier}
+import play.api.mvc._
+
+import scala.concurrent.Future
+import scala.util.Try
+import scala.util.matching.Regex
 
 /**
-  * Created by johann on 25/04/17.
+  * Created by johann on 13/07/17.
   */
-package object json {
+object ProfileFilterAction {
 
-  implicit lazy val AccessRequestFormat: OFormat[AccessRequest] = AccessRequestMappers.AccessRequestFormat
+  def apply(verifier: JWTVerifier, realm: String, altVerifiers: JWTVerifier*): ActionBuilder[RequestWithProfile] = {
+    TokenFilterAction(verifier, realm, altVerifiers: _*) andThen ProfileAction
+  }
 
-  implicit lazy val ScopeQualifierFormat: Format[ScopeQualifier] = ScopeQualifierMappers.ScopeQualifierFormat
+  def apply(verifier: JWTVerifier, altVerifiers: JWTVerifier*): ActionBuilder[RequestWithProfile] = {
+    TokenFilterAction(verifier, realm = "", altVerifiers: _*) andThen ProfileAction
+  }
 
 }

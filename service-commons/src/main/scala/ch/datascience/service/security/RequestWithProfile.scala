@@ -16,14 +16,16 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.models.resource
+package ch.datascience.service.security
+
+import com.auth0.jwt.interfaces.DecodedJWT
+import play.api.mvc.{Request, WrappedRequest}
 
 /**
-  * Created by jeberle on 09.06.17.
+  * Created by johann on 13/07/17.
   */
-case class WriteResourceRequest(override val resourceId: AccessRequest#PermissionHolderId)
-  extends SingleScopeResourceAccessRequest(resourceId, scope = WriteResourceRequest.scope)
+class RequestWithProfile[+A](token: DecodedJWT, val executionId: Option[Long], request: Request[A]) extends RequestWithToken[A](token, request) {
 
-object WriteResourceRequest {
-  lazy val scope: ResourceScope = ResourceScope.StorageWrite
+  def userId: String = token.getSubject
+
 }

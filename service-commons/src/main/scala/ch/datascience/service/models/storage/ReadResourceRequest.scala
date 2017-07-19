@@ -16,17 +16,24 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.models.resource
+package ch.datascience.service.models.storage
 
-import play.api.libs.json.{Format, OFormat}
+import ch.datascience.service.models.resource.{AccessRequest, ScopeQualifier, SingleScopeResourceAccessRequest}
+import play.api.libs.json.JsObject
 
 /**
-  * Created by johann on 25/04/17.
+  * Created by jeberle on 09.06.17.
   */
-package object json {
+case class ReadResourceRequest(
+  resourceId: AccessRequest#PermissionHolderId
+) extends SingleScopeResourceAccessRequest.ToSingleScopeResourceAccessRequest {
 
-  implicit lazy val AccessRequestFormat: OFormat[AccessRequest] = AccessRequestMappers.AccessRequestFormat
+  def toAccessRequest(extraClaims: Option[JsObject]): SingleScopeResourceAccessRequest = {
+    SingleScopeResourceAccessRequest(resourceId, ReadResourceRequest.scope, extraClaims)
+  }
 
-  implicit lazy val ScopeQualifierFormat: Format[ScopeQualifier] = ScopeQualifierMappers.ScopeQualifierFormat
+}
 
+object ReadResourceRequest {
+  lazy val scope: ScopeQualifier = ScopeQualifier.StorageRead
 }

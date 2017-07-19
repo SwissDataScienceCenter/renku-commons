@@ -16,14 +16,11 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.models.resource
+package ch.datascience.service.models.deployment
+
+import play.api.libs.json.JsObject
 
 /**
-  * Created by johann on 13/07/17.
+  * Created by johann on 10/07/17.
   */
-case class CreateFileRequest(bucketId: AccessRequest#PermissionHolderId, fileName: String)
-  extends SingleScopeAccessRequest(permissionHolderId = Some(bucketId), scope = CreateFileRequest.scope)
-
-object CreateFileRequest {
-  lazy val scope: ResourceScope = ResourceScope.StorageCreate
-}
+case class DeploymentRequest(deploymentType: String, parentId: Option[Long], options: Option[JsObject])

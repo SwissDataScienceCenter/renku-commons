@@ -21,26 +21,26 @@ package ch.datascience.service.models.resource
 /**
   * Created by johann on 13/07/17.
   */
-sealed abstract class ResourceScope(val name: String)
+sealed abstract class ScopeQualifier(val name: String)
 
-object ResourceScope {
+object ScopeQualifier {
 
-  val scopes: Set[ResourceScope] = Set(StorageRead, StorageWrite, StorageCreate)
+  val scopes: Set[ScopeQualifier] = Set(StorageRead, StorageWrite, StorageCreate)
 
-  def valueOf(name: String): ResourceScope = ResourceScope.apply(name)
+  def valueOf(name: String): ScopeQualifier = ScopeQualifier.apply(name)
 
-  def apply(name: String): ResourceScope = name.toLowerCase match {
+  def apply(name: String): ScopeQualifier = name.toLowerCase match {
     case StorageRead.name => StorageRead
     case StorageWrite.name => StorageWrite
     case StorageCreate.name => StorageCreate
   }
 
-  case object StorageRead extends ResourceScope("storage:read")
+  case object StorageRead extends ScopeQualifier("storage:read")
 
-  case object StorageWrite extends ResourceScope("storage:write")
+  case object StorageWrite extends ScopeQualifier("storage:write")
 
-  case object StorageCreate extends ResourceScope("storage:create")
+  case object StorageCreate extends ScopeQualifier("storage:create")
 
-  case object BucketCreate extends ResourceScope("storage:bucket_create")
+  case object BucketCreate extends ScopeQualifier("storage:bucket_create")
 
 }

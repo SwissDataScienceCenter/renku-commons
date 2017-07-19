@@ -16,17 +16,13 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.models.resource
-
-import play.api.libs.json.{Format, OFormat}
+package ch.datascience.service.models
 
 /**
-  * Created by johann on 25/04/17.
+  * Created by johann on 18/07/17.
   */
-package object json {
+package object resource {
 
-  implicit lazy val AccessRequestFormat: OFormat[AccessRequest] = AccessRequestMappers.AccessRequestFormat
-
-  implicit lazy val ScopeQualifierFormat: Format[ScopeQualifier] = ScopeQualifierMappers.ScopeQualifierFormat
+  type Scope = Set[ScopeQualifier]
 
 }
