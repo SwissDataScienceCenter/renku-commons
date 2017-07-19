@@ -9,6 +9,8 @@ sbt_graph_services += graph-init
 
 sbt_platform_services += resources-manager-service
 sbt_platform_services += storage-service
+# Not ready yet
+# sbt_platform_services += deploy-service
 
 sbt_services += $(sbt_graph_services)
 sbt_services += $(sbt_platform_services)
