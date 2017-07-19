@@ -5,22 +5,22 @@ import play.api.libs.json.JsObject
 /**
   * Created by johann on 14/07/17.
   */
-case class ResourceAccessRequest(
+class ResourceAccessRequest(
   resourceId: AccessRequest#PermissionHolderId,
   scope: Set[ScopeQualifier],
   extraClaims: Option[JsObject]
-) extends AccessRequest.ToAccessRequest {
-
-  override def toAccessRequest: AccessRequest = AccessRequest(Some(resourceId), scope, extraClaims)
-
-}
+) extends AccessRequest(Some(resourceId), scope, extraClaims)
 
 object ResourceAccessRequest {
 
-  trait ToResourceAccessRequest extends AccessRequest.ToAccessRequest {
-    def toResourceAccessRequest: ResourceAccessRequest
+  def apply(
+    resourceId: AccessRequest#PermissionHolderId,
+    scope: Set[ScopeQualifier],
+    extraClaims: Option[JsObject]
+  ): ResourceAccessRequest = new ResourceAccessRequest(resourceId, scope, extraClaims)
 
-    final def toAccessRequest: AccessRequest = toResourceAccessRequest.toAccessRequest
+  trait ToResourceAccessRequest extends AccessRequest.ToAccessRequest {
+    def toAccessRequest(extraClaims: Option[JsObject]): ResourceAccessRequest
   }
 
 }
