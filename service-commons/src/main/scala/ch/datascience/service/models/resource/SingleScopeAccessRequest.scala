@@ -23,12 +23,22 @@ import play.api.libs.json.JsObject
 /**
   * Created by johann on 14/07/17.
   */
-abstract class SingleScopeAccessRequest(
-  val permissionHolderId: Option[AccessRequest#PermissionHolderId],
-  val scope: ScopeQualifier,
-  val extraClaims: Option[JsObject]
-) extends AccessRequest.ToAccessRequest {
+class SingleScopeAccessRequest(
+  permissionHolderId: Option[AccessRequest#PermissionHolderId],
+  scope: ScopeQualifier,
+  extraClaims: Option[JsObject]
+) extends AccessRequest(permissionHolderId, Set(scope), extraClaims)
 
-  def toAccessRequest: AccessRequest = AccessRequest(permissionHolderId, Set(scope), extraClaims)
+object SingleScopeAccessRequest {
+
+  def apply(
+    permissionHolderId: Option[AccessRequest#PermissionHolderId],
+    scope: ScopeQualifier,
+    extraClaims: Option[JsObject]
+  ): SingleScopeAccessRequest = new SingleScopeAccessRequest(permissionHolderId, scope, extraClaims)
+
+  trait ToSingleScopeAccessRequest extends AccessRequest.ToAccessRequest {
+    def toAccessRequest(extraClaims: Option[JsObject]): SingleScopeAccessRequest
+  }
 
 }

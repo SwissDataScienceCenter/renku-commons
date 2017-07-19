@@ -36,7 +36,7 @@ case class AccessRequest(
 object AccessRequest {
 
   trait ToAccessRequest {
-    def toAccessRequest: AccessRequest
+    def toAccessRequest(extraClaims: Option[JsObject]): AccessRequest
   }
 
 }

@@ -16,18 +16,21 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.models.resource
+package ch.datascience.service.models.storage.json
 
-import play.api.libs.json.JsObject
+import ch.datascience.service.models.resource.json.RequestTypeMappers
+import ch.datascience.service.models.storage.CreateFileRequest
+import play.api.libs.functional.syntax._
+import play.api.libs.json._
 
 /**
-  * Created by jeberle on 09.06.17.
+  * Created by johann on 13/07/17.
   */
-case class WriteResourceRequest(
-  override val resourceId: AccessRequest#PermissionHolderId,
-  override val extraClaims: Option[JsObject]
-) extends SingleScopeResourceAccessRequest(resourceId, scope = WriteResourceRequest.scope, extraClaims = extraClaims)
+private[json] object CreateFileRequestMappers {
 
-object WriteResourceRequest {
-  lazy val scope: ScopeQualifier = ScopeQualifier.StorageWrite
+  def CreateFileRequestFormat: OFormat[CreateFileRequest] = RequestTypeMappers.format("create_file")((
+    (JsPath \ "bucket_id").format[Long] and
+      (JsPath \ "file_name").format[String]
+    )(CreateFileRequest.apply, unlift(CreateFileRequest.unapply)))
+
 }

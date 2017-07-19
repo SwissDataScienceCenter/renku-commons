@@ -18,28 +18,28 @@
 
 package ch.datascience.service.models.resource.json
 
-import ch.datascience.service.models.resource.{ReadResourceRequest, ScopeQualifier}
 import play.api.data.validation.ValidationError
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
+/**
+  * Created by johann on 18/07/17.
+  */
+object RequestTypeMappers {
 
-object ReadResourceRequestMappers {
+  def format[A](requestType: String)(format: OFormat[A]): OFormat[A] = OFormat(readFilter(requestType)(format), writeWithType(requestType)(format))
 
-  def ReadResourceRequestFormat: OFormat[ReadResourceRequest] = (
-    (JsPath \ "scope").format[ScopeQualifier](Reads.filter[ScopeQualifier](ValidationError("wrong scope"))(_ == ReadResourceRequest.scope)) and
-      (JsPath \ "resource_id").format[Long] and
-      (JsPath \ "extra_claims").formatNullable[JsObject]
-    )(read, write)
+  def readFilter[A](requestType: String)(reads: Reads[A]): Reads[A] = {
+    val r1 = (JsPath \ "request_type").read[String].filter(ValidationError("wrong type"))(_ == requestType)
+    r1.flatMap{ _ => reads }
+  }
 
-  private[this] def read(
-    scope: ScopeQualifier,
-    resourceId: Long,
-    extraClaims: Option[JsObject]
-  ): ReadResourceRequest = ReadResourceRequest(resourceId, extraClaims)
-
-  private[this] def write(req: ReadResourceRequest): (ScopeQualifier, Long, Option[JsObject]) = {
-    (req.scope, req.resourceId, req.extraClaims)
+  def writeWithType[A](requestType: String)(writes: OWrites[A]): OWrites[A] = {
+    val t: OWrites[JsObject] = (
+      (JsPath \ "request_type").write[String] and
+        JsPath.write[JsObject]
+      ) { x => (requestType, x) }
+    writes.transform(t)
   }
 
 }

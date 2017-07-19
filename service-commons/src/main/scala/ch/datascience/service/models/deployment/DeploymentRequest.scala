@@ -16,20 +16,11 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.models.resource
+package ch.datascience.service.models.deployment
 
 import play.api.libs.json.JsObject
 
 /**
-  * Created by jeberle on 09.06.17.
+  * Created by johann on 10/07/17.
   */
-case class CreateBucketRequest(
-  name: String,
-  backend: String,
-  backendOptions: Option[JsObject],
-  override val extraClaims: Option[JsObject]
-) extends SingleScopeAccessRequest(permissionHolderId = None, scope = CreateBucketRequest.scope, extraClaims = extraClaims)
-
-object CreateBucketRequest {
-  lazy val scope: ScopeQualifier = ScopeQualifier.BucketCreate
-}
+case class DeploymentRequest(deploymentType: String, parentId: Option[Long], options: Option[JsObject])
