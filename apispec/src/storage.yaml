@@ -113,6 +113,11 @@ paths:
         description: 'Deployment id, passed if request made from deployed application'
         type: integer
         format: int64
+      - name: Authorization
+        in: header
+        description: 'Bearer token (from authorization request)'
+        required: true
+        type: string
       responses:
         200:
           description: ok
