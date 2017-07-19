@@ -1,12 +1,18 @@
 organization := "ch.datascience"
-name := "service-commons"
 version := "0.1.0-SNAPSHOT"
 scalaVersion := "2.11.8"
 
+lazy val projectName = "service-commons"
+name := projectName
+
 lazy val root = Project(
-  id   = "service-commons",
+  id   = projectName,
   base = file(".")
+).dependsOn(
+  core
 )
+
+lazy val core = RootProject(file("../graph-core"))
 
 resolvers += DefaultMavenRepository
 
