@@ -1,0 +1,10 @@
+language: scala
+scala:
+- '2.11.8'
+matrix:
+  include:
+  - env: COMPONENT=graph-core
+    script: cd $COMPONENT && sbt ++$TRAVIS_SCALA_VERSION test
+  - env: COMPONENT=graph-init
+    script: cd $COMPONENT && sbt ++$TRAVIS_SCALA_VERSION test
+
