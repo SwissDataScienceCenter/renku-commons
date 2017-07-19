@@ -4,8 +4,11 @@ SBT_DOCKER_TARGET = docker:publishLocal
 
 sbt_graph_services += graph-typesystem-service
 sbt_graph_services += graph-mutation-service
+sbt_graph_services += graph-navigation-service
+sbt_graph_services += graph-init
 
 sbt_platform_services += resources-manager-service
+sbt_platform_services += storage-service
 
 sbt_services += $(sbt_graph_services)
 sbt_services += $(sbt_platform_services)
