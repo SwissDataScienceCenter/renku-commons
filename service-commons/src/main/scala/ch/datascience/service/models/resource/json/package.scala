@@ -8,11 +8,6 @@ import play.api.libs.json.{Format, OFormat}
 package object json {
 
   implicit lazy val AccessRequestFormat: OFormat[AccessRequest] = AccessRequestMappers.AccessRequestFormat
-  implicit lazy val CreateBucketRequestFormat: OFormat[CreateBucketRequest] = CreateBucketRequestMappers.CreateBucketRequestFormat
-  implicit lazy val CreateFileRequestFormat: OFormat[CreateFileRequest] = CreateFileRequestMappers.CreateFileRequestFormat
-  implicit lazy val ReadResourceRequestFormat: OFormat[ReadResourceRequest] = ReadResourceRequestMappers.ReadResourceRequestFormat
-  implicit lazy val ResourceAccessRequestFormat: OFormat[ResourceAccessRequest] = ResourceAccessRequestMappers.ResourceAccessRequestFormat
-  implicit lazy val WriteResourceRequestFormat: OFormat[WriteResourceRequest] = WriteResourceRequestMappers.WriteResourceRequestFormat
 
   implicit lazy val ScopeQualifierFormat: Format[ScopeQualifier] = ScopeQualifierMappers.ScopeQualifierFormat
 
