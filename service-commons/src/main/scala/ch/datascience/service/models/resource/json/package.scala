@@ -8,6 +8,7 @@ import play.api.libs.json.{Format, OFormat}
 package object json {
 
   implicit lazy val AccessRequestFormat: OFormat[AccessRequest] = AccessRequestMappers.AccessRequestFormat
+  implicit lazy val AccessGrantFormat: OFormat[AccessGrant] = AccessGrantMappers.AccessGrantFormat
 
   implicit lazy val ScopeQualifierFormat: Format[ScopeQualifier] = ScopeQualifierMappers.ScopeQualifierFormat
 
