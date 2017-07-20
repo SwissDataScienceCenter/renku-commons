@@ -16,18 +16,16 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.models.resource
+package ch.datascience.service.models.resource.json
 
-import play.api.libs.json.{Format, OFormat}
+import ch.datascience.service.models.resource.AccessGrant
+import play.api.libs.json._
+import play.api.libs.functional.syntax._
 
-/**
-  * Created by johann on 25/04/17.
-  */
-package object json {
+object AccessGrantMappers {
 
-  implicit lazy val AccessRequestFormat: OFormat[AccessRequest] = AccessRequestMappers.AccessRequestFormat
-  implicit lazy val AccessGrantFormat: OFormat[AccessGrant] = AccessGrantMappers.AccessGrantFormat
-
-  implicit lazy val ScopeQualifierFormat: Format[ScopeQualifier] = ScopeQualifierMappers.ScopeQualifierFormat
+  def AccessGrantFormat: OFormat[AccessGrant] = {
+    (JsPath \ "access_token").format[String].inmap(AccessGrant, unlift(AccessGrant.unapply))
+  }
 
 }
