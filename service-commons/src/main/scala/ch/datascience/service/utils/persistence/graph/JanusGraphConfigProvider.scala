@@ -1,4 +1,4 @@
-package persistence.graph
+package ch.datascience.service.utils.persistence.graph
 
 import javax.inject.Inject
 

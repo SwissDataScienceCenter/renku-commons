@@ -1,15 +1,15 @@
-package controllers
+package ch.datascience.service.utils
 
 import ch.datascience.graph.execution.GraphExecutionContext
+import ch.datascience.service.utils.persistence.graph.{GraphExecutionContextProvider, JanusGraphTraversalSourceProvider}
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource
-import persistence.graph.{GraphExecutionContextProvider, JanusGraphTraversalSourceProvider}
 import play.api.mvc.Controller
 
 /**
   * Created by johann on 13/06/17.
   */
-// TODO: move this and dependents to service-commons
-trait GraphTraversalComponent { this: Controller =>
+
+trait ControllerWithGraphTraversal { this: Controller =>
 
   protected def graphExecutionContextProvider: GraphExecutionContextProvider
 
