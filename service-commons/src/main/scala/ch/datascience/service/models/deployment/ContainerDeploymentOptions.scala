@@ -9,7 +9,7 @@ case class ContainerDeploymentOptions(
   backend: Option[String],
   image: String,
   environment: Map[String, String],
-  ports: Map[String, String],
+  ports: Set[Int],
   entrypoint: Option[String],
   command: Option[Seq[String]]
 )
