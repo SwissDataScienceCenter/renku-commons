@@ -1,9 +1,9 @@
-package persistence.reader
+package ch.datascience.service.utils.persistence.reader
 
 import javax.inject.Inject
 
 import ch.datascience.graph.elements.tinkerpop_mappers.{EdgeReader => Base}
-import persistence.scope.Scope
+import ch.datascience.service.utils.persistence.scope.Scope
 
 /**
   * Created by johann on 13/06/17.

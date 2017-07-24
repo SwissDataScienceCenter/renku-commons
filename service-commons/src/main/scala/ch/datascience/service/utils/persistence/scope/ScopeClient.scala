@@ -1,4 +1,4 @@
-package persistence.scope
+package ch.datascience.service.utils.persistence.scope
 
 import javax.inject.{Inject, Singleton}
 
