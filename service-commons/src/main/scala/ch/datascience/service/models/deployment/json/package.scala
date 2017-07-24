@@ -16,18 +16,13 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.models.resource
+package ch.datascience.service.models.deployment
 
-import play.api.libs.json.{Format, OFormat}
+import play.api.libs.json.OFormat
 
-/**
-  * Created by johann on 25/04/17.
-  */
 package object json {
 
-  implicit lazy val AccessRequestFormat: OFormat[AccessRequest] = AccessRequestMappers.AccessRequestFormat
-  implicit lazy val AccessGrantFormat: OFormat[AccessGrant] = AccessGrantMappers.AccessGrantFormat
-
-  implicit lazy val ScopeQualifierFormat: Format[ScopeQualifier] = ScopeQualifierMappers.ScopeQualifierFormat
+  implicit lazy val ContainerDeploymentOptionsFormat: OFormat[ContainerDeploymentOptions] = ContainerDeploymentOptionsMappers.ContainerDeploymentOptionsFormat
+  implicit lazy val DeploymentRequestFormat: OFormat[DeploymentRequest] = DeploymentRequestMappers.DeploymentRequestFormat
 
 }

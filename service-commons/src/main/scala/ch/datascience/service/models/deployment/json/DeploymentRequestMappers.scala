@@ -16,18 +16,18 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.models.resource
+package ch.datascience.service.models.deployment.json
 
-import play.api.libs.json.{Format, OFormat}
+import ch.datascience.service.models.deployment.DeploymentRequest
+import play.api.libs.functional.syntax._
+import play.api.libs.json._
 
-/**
-  * Created by johann on 25/04/17.
-  */
-package object json {
+object DeploymentRequestMappers {
 
-  implicit lazy val AccessRequestFormat: OFormat[AccessRequest] = AccessRequestMappers.AccessRequestFormat
-  implicit lazy val AccessGrantFormat: OFormat[AccessGrant] = AccessGrantMappers.AccessGrantFormat
-
-  implicit lazy val ScopeQualifierFormat: Format[ScopeQualifier] = ScopeQualifierMappers.ScopeQualifierFormat
+  def DeploymentRequestFormat: OFormat[DeploymentRequest] = (
+    (JsPath \ "deployment_type").format[String] and
+      (JsPath \ "parent_id").formatNullable[Long] and
+      (JsPath \ "options").formatNullable[JsObject]
+  ) (DeploymentRequest, unlift(DeploymentRequest.unapply))
 
 }

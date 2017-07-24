@@ -18,16 +18,12 @@
 
 package ch.datascience.service.models.resource
 
-import play.api.libs.json.{Format, OFormat}
+import com.auth0.jwt.interfaces.DecodedJWT
+import play.api.libs.json.JsObject
 
-/**
-  * Created by johann on 25/04/17.
-  */
-package object json {
-
-  implicit lazy val AccessRequestFormat: OFormat[AccessRequest] = AccessRequestMappers.AccessRequestFormat
-  implicit lazy val AccessGrantFormat: OFormat[AccessGrant] = AccessGrantMappers.AccessGrantFormat
-
-  implicit lazy val ScopeQualifierFormat: Format[ScopeQualifier] = ScopeQualifierMappers.ScopeQualifierFormat
-
-}
+case class AccessGrantToken(
+  permissionHolderId: Option[AccessRequest#PermissionHolderId],
+  scope: Set[ScopeQualifier],
+  extraClaims: Option[JsObject],
+  underlying: DecodedJWT
+)
