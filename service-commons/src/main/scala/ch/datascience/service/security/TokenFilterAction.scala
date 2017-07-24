@@ -17,45 +17,16 @@ case class TokenFilterAction(verifier: JWTVerifier, realm: String, altVerifiers:
     with ActionTransformer[Request, RequestWithToken]
     with AbstractFilterBeforeBodyParseAction {
 
+  lazy val tokenFilter: TokenFilter = TokenFilter(verifier, realm, altVerifiers: _*)
+
   protected def transform[A](request: Request[A]): Future[RequestWithToken[A]] = Future.successful {
-    require(request.tags.get("VERIFIED_TOKEN").contains(extractToken(request.headers).get))
-    val token = JWT.decode(extractToken(request.headers).get)
+    require(request.tags.get("VERIFIED_TOKEN").contains(tokenFilter.extractToken(request.headers).get))
+    val token = JWT.decode(tokenFilter.extractToken(request.headers).get)
     new RequestWithToken[A](token, request)
   }
 
   def filter(rh: RequestHeader): Either[Result, RequestHeader] = {
-    extractToken(rh.headers) match {
-      case Some(token) =>
-        val t0 = Try { verifier.verify(token) }
-        val t = altVerifiers.foldLeft(t0) { (t, v) => t.orElse(Try{ v.verify(token) }) }
-        t.map(_ => None).recover {
-          case e: JWTDecodeException => Some(makeUnauthorizedResponse(Some("invalid_token"), Some("Token is not a JWT")))
-          case e: AlgorithmMismatchException => Some(makeUnauthorizedResponse(Some("invalid_token"), Some("Algorithm mismatch")))
-          case e: SignatureVerificationException => Some(makeUnauthorizedResponse(Some("invalid_token"), Some("Token signature invalid")))
-          case e: TokenExpiredException => Some(makeUnauthorizedResponse(Some("invalid_token"), Some("Token expired")))
-          case e: InvalidClaimException => Some(makeUnauthorizedResponse(Some("invalid_token"), Some("Claims do not match verifier")))
-        }.get.toLeft(rh.withTag("VERIFIED_TOKEN", token))
-      case None => Left(makeUnauthorizedResponse())
-    }
-  }
-
-  protected def extractToken(headers: Headers): Option[String] = {
-    headers.get("Authorization") match {
-      case Some(header) =>  header match {
-        case tokenRegexp(token) => Some(token)
-        case _ => None
-      }
-      case None => None
-    }
-  }
-
-  protected lazy val tokenRegexp: Regex = "(?i)Bearer (.*)".r.anchored
-
-  protected def makeUnauthorizedResponse(error: Option[String] = None, errorDescription: Option[String] = None): Result = {
-    val errorMsg = error.map(e => s""", error="$e"""").getOrElse("")
-    val errorDescriptionMsg = errorDescription.map(e => s""", error_description="$e"""").getOrElse("")
-    val challenge =  s"""Bearer realm="$realm"$errorMsg$errorDescriptionMsg"""
-    Results.Unauthorized.withHeaders(("WWW-Authenticate", challenge))
+    tokenFilter.filter(rh).right.map(token => rh.withTag("VERIFIED_TOKEN", token.getToken))
   }
 
 }
