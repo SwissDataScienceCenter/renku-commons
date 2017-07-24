@@ -281,36 +281,58 @@ paths:
 definitions:
   ReadFileRequest:
     type: object
-    required: resourceId
+    required: 
+      - resourceId
+      - request_type
     properties:
       resourceId:
         type: integer
         format: int64
+      request_type:
+        type: string
+        enum:
+          - "read_file"
   WriteFileRequest:
     type: object
-    required: resourceId
+    required: 
+      - resourceId
+      - request_type
     properties:
       resourceId:
         type: integer
         format: int64
+      request_type:
+        type: string
+        enum:
+          - "write_file"
   CreateBucketRequest:
     type: object
     required:
       - name
       - backend
+      - request_type
     properties:
       name:
         type: string
       backend:
         type: string
+      request_type:
+        type: string
+        enum:
+          - "create_bucket"
   CreateFileRequest:
     type: object
     required:
       - bucketId
       - filename
+      - request_type
     properties:
       bucketId:
         type: integer
         format: int64
       filename:
         type: string
+      request_type:
+        type: string
+        enum:
+          - "create_file"
