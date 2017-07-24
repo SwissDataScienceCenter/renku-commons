@@ -18,12 +18,9 @@
 
 package ch.datascience.service.models.deployment
 
-import play.api.libs.json.OFormat
+import play.api.libs.json.JsObject
 
-package object json {
-
-  implicit lazy val ContainerDeploymentOptionsFormat: OFormat[ContainerDeploymentOptions] = ContainerDeploymentOptionsMappers.ContainerDeploymentOptionsFormat
-  implicit lazy val DeploymentRequestFormat: OFormat[DeploymentRequest] = DeploymentRequestMappers.DeploymentRequestFormat
-  implicit lazy val DeploymentResponseFormat: OFormat[DeploymentResponse] = DeploymentResponseMappers.DeploymentResponseFormat
-
-}
+/**
+  * Created by johann on 10/07/17.
+  */
+case class DeploymentResponse(id: Long, backendId: String)

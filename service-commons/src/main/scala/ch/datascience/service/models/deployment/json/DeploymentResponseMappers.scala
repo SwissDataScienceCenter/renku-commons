@@ -16,14 +16,17 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.models.deployment
+package ch.datascience.service.models.deployment.json
 
-import play.api.libs.json.OFormat
+import ch.datascience.service.models.deployment.DeploymentResponse
+import play.api.libs.functional.syntax._
+import play.api.libs.json._
 
-package object json {
+object DeploymentResponseMappers {
 
-  implicit lazy val ContainerDeploymentOptionsFormat: OFormat[ContainerDeploymentOptions] = ContainerDeploymentOptionsMappers.ContainerDeploymentOptionsFormat
-  implicit lazy val DeploymentRequestFormat: OFormat[DeploymentRequest] = DeploymentRequestMappers.DeploymentRequestFormat
-  implicit lazy val DeploymentResponseFormat: OFormat[DeploymentResponse] = DeploymentResponseMappers.DeploymentResponseFormat
+  def DeploymentResponseFormat: OFormat[DeploymentResponse] = (
+    (JsPath \ "id").format[Long] and
+      (JsPath \ "backend_id").format[String]
+  ) (DeploymentResponse, unlift(DeploymentResponse.unapply))
 
 }
