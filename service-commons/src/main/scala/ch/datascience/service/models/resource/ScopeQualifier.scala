@@ -7,7 +7,7 @@ sealed abstract class ScopeQualifier(val name: String)
 
 object ScopeQualifier {
 
-  val scopes: Set[ScopeQualifier] = Set(StorageRead, StorageWrite, StorageCreate)
+  val scopes: Set[ScopeQualifier] = Set(StorageRead, StorageWrite, StorageCreate, BucketCreate)
 
   def valueOf(name: String): ScopeQualifier = ScopeQualifier.apply(name)
 
@@ -16,6 +16,7 @@ object ScopeQualifier {
     case StorageWrite.name => StorageWrite
     case StorageCreate.name => StorageCreate
     case DeploymentCreate.name => DeploymentCreate
+    case BucketCreate.name => BucketCreate
   }
 
   case object StorageRead extends ScopeQualifier("storage:read")
