@@ -10,6 +10,6 @@ object DeploymentRequestMappers {
     (JsPath \ "deployment_type").format[String] and
       (JsPath \ "parent_id").formatNullable[Long] and
       (JsPath \ "options").formatNullable[JsObject]
-  ) (DeploymentRequest, unlift(DeploymentRequest.unapply))
+  ) (DeploymentRequest.apply, unlift(DeploymentRequest.unapply))
 
 }
