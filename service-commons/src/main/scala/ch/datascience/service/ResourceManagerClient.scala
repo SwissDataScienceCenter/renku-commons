@@ -23,7 +23,6 @@ class ResourceManagerClient @Inject()(configuration: Configuration)(implicit con
       .withRequestTimeout(10000.millis)
     wsRequest.post(Json.toJson(request)(writer)).map {
       response =>
-        println(response.body)
         response.json.validate(AccessGrantFormat).asOpt
     }
   }
