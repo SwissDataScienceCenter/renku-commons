@@ -31,7 +31,7 @@ paths:
         description: 'Resource access request object'
         required: true
         schema:
-          $ref: '#/definitions/AcessRequest'
+          $ref: '#/definitions/AccessRequest'
       - in: header
         name: Authorization
         description: 'Bearer token'
@@ -43,7 +43,7 @@ paths:
         401:
           description: 'Authentication required'
 definitions:
-  AcessRequest:
+  AccessRequest:
     type: object
     required:
     - scope
