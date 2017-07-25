@@ -183,7 +183,7 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/ReadFileRequest'
-      - name: SDSC-Deployment-Id
+      - name: SDSC-DEPLOYMENT-ID
         in: header
         description: 'Deployment id, passed if request made from deployed application'
         type: integer
@@ -237,7 +237,7 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/CreateBucketRequest'
-      - name: SDSC-Deployment-Id
+      - name: SDSC-DEPLOYMENT-ID
         in: header
         description: 'Deployment id, passed if request made from deployed application'
         type: integer
@@ -264,7 +264,7 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/CreateFileRequest'
-      - name: SDSC-Deployment-Id
+      - name: SDSC-DEPLOYMENT-ID
         in: header
         description: 'Deployment id, passed if request made from deployed application'
         type: integer
