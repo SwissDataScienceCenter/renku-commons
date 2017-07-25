@@ -7,10 +7,16 @@ import play.api.libs.json.JsObject
 /**
   * Created by johann on 10/07/17.
   */
-case class DeploymentRequest(deploymentType: String, parentId: Option[Long], options: Option[JsObject]) extends SingleScopeAccessRequest.ToSingleScopeAccessRequest {
+case class DeploymentRequest(deploymentType: String, options: Option[JsObject]) extends SingleScopeAccessRequest.ToSingleScopeAccessRequest { self =>
 
   def toAccessRequest(extraClaims: Option[JsObject]): SingleScopeAccessRequest = {
-    SingleScopeAccessRequest(permissionHolderId = parentId, DeploymentRequest.scope, extraClaims)
+    SingleScopeAccessRequest(permissionHolderId = None, DeploymentRequest.scope, extraClaims)
+  }
+
+  def withParent(parentId: Long): SingleScopeAccessRequest.ToSingleScopeAccessRequest = new SingleScopeAccessRequest.ToSingleScopeAccessRequest {
+    def toAccessRequest(extraClaims: Option[JsObject]): SingleScopeAccessRequest = {
+      SingleScopeAccessRequest(permissionHolderId = Some(parentId), DeploymentRequest.scope, extraClaims)
+    }
   }
 
 }

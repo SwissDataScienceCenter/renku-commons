@@ -8,7 +8,7 @@ object DeploymentResponseMappers {
 
   def DeploymentResponseFormat: OFormat[DeploymentResponse] = (
     (JsPath \ "id").format[Long] and
-      (JsPath \ "backend_id").format[String]
+      (JsPath \ "backend_id").formatNullable[String]
   ) (DeploymentResponse, unlift(DeploymentResponse.unapply))
 
 }

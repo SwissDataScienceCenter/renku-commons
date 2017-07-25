@@ -37,13 +37,7 @@ paths:
         200:
           description: 'Creation successful'
           schema:
-            type: object
-            required:
-            - id
-            properties:
-              id:
-                type: integer
-                format: int64
+            $ref: '#/definitions/DeploymentResponse'
   /authorize/create:
     post:
       tags:
@@ -76,10 +70,6 @@ definitions:
         type: string
         enum:
         - 'docker'
-        format: int64
-      parent_id:
-        type: integer
-        format: int64
       options:
         type: object
         description: |
@@ -113,7 +103,7 @@ definitions:
       ports:
         type: array
         items:
-          type: int
+          type: integer
           format: int32
         description: List of container ports to be mapped
       entrypoint:
@@ -124,6 +114,18 @@ definitions:
         items:
           type: string
         description: Container command to be executed
+  DeploymentResponse:
+    type: object
+    required:
+    - id
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: 'Graph id of the deployment'
+      backend_id:
+        type: string
+        description: 'Backend id of the deployment'
   AccessGrant:
     type: object
     required:
