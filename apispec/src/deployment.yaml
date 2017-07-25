@@ -1,0 +1,134 @@
+# API spec in YAML
+swagger: '2.0'
+info:
+  title: Deployment Service API
+  description: |
+    Deployment Service API specification
+  version: '0.0.1'
+# the domain of the service
+host: internal.datascience.ch
+# array of all schemes that your API supports
+schemes:
+- https
+# will be prefixed to all paths
+basePath: /api/deployment
+produces:
+- application/json
+consumes:
+- application/json
+tags:
+- name: 'Deploy'
+  description: 'Perform deploy operations'
+- name: 'Authorize'
+  description: 'Request access to deployment'
+paths:
+  /deploy/create:
+    post:
+      tags:
+      - 'Deploy'
+      summary: 'Create a new deployment'
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer token (from authorization request)
+        required: true
+        type: string
+      responses:
+        200:
+          description: 'Creation successful'
+          schema:
+            type: object
+            required:
+            - id
+            properties:
+              id:
+                type: integer
+                format: int64
+  /authorize/create:
+    post:
+      tags:
+       - 'Authorize'
+      summary: 'Authorize deployment'
+      parameters:
+      - name: Authorization
+        in: header
+        description: 'Bearer token (from identity manager)'
+        required: true
+        type: string
+      - name: body
+        in: body
+        description: Deployment Request
+        required: true
+        schema:
+          $ref: '#/definitions/DeploymentRequest'
+      responses:
+        200:
+          description: 'Deployment request granted'
+          schema:
+            $ref: '#/definitions/AccessGrant'
+definitions:
+  DeploymentRequest:
+    type: object
+    required:
+    - deployment_type
+    properties:
+      deployment_type:
+        type: string
+        enum:
+        - 'docker'
+        format: int64
+      parent_id:
+        type: integer
+        format: int64
+      options:
+        type: object
+        description: |
+          Deployment options
+
+          See ContainerDeploymentOptions for deploying containers
+    example:
+      deployment_type: 'docker'
+      options:
+        image: busybox
+        environment:
+          MYVAR: 'hello, world!'
+        command: ['env']
+  ContainerDeploymentOptions:
+    type: object
+    required:
+    - image
+    description: |
+      Options for container deployment
+
+      Except 'backend', the properties map to docker concepts.
+    properties:
+      backend:
+        type: string
+      image:
+        type: string
+        description: Container image (with tags)
+      environment:
+        type: object
+        description: Environment variables mapping
+      ports:
+        type: array
+        items:
+          type: int
+          format: int32
+        description: List of container ports to be mapped
+      entrypoint:
+        type: string
+        description: Container entrypoint
+      command:
+        type: array
+        items:
+          type: string
+        description: Container command to be executed
+  AccessGrant:
+    type: object
+    required:
+    - access_token
+    properties:
+      access_token:
+        type: string
+        description: Access token to pass to further requests
