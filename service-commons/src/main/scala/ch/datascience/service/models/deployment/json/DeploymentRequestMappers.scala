@@ -8,7 +8,6 @@ object DeploymentRequestMappers {
 
   def DeploymentRequestFormat: OFormat[DeploymentRequest] = (
     (JsPath \ "deployment_type").format[String] and
-      (JsPath \ "parent_id").formatNullable[Long] and
       (JsPath \ "options").formatNullable[JsObject]
   ) (DeploymentRequest.apply, unlift(DeploymentRequest.unapply))
 
