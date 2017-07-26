@@ -24,5 +24,6 @@ package object json {
 
   implicit lazy val ContainerDeploymentOptionsFormat: OFormat[ContainerDeploymentOptions] = ContainerDeploymentOptionsMappers.ContainerDeploymentOptionsFormat
   implicit lazy val DeploymentRequestFormat: OFormat[DeploymentRequest] = DeploymentRequestMappers.DeploymentRequestFormat
+  implicit lazy val DeploymentResponseFormat: OFormat[DeploymentResponse] = DeploymentResponseMappers.DeploymentResponseFormat
 
 }

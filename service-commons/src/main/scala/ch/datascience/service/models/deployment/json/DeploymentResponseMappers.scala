@@ -16,18 +16,17 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.models.deployment
+package ch.datascience.service.models.deployment.json
 
-import play.api.libs.json.{JsObject, JsString}
+import ch.datascience.service.models.deployment.DeploymentResponse
+import play.api.libs.functional.syntax._
+import play.api.libs.json._
 
-/**
-  * Created by johann on 10/07/17.
-  */
-case class ContainerDeploymentOptions(
-  backend: Option[String],
-  image: String,
-  environment: Map[String, String],
-  ports: Map[String, String],
-  entrypoint: Option[String],
-  command: Option[Seq[String]]
-)
+object DeploymentResponseMappers {
+
+  def DeploymentResponseFormat: OFormat[DeploymentResponse] = (
+    (JsPath \ "id").format[Long] and
+      (JsPath \ "backend_id").format[String]
+  ) (DeploymentResponse, unlift(DeploymentResponse.unapply))
+
+}
