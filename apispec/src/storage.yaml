@@ -316,6 +316,9 @@ definitions:
         type: string
       backend:
         type: string
+        enum:
+          - "local"
+          - "swift"
       request_type:
         type: string
         enum:
@@ -327,10 +330,10 @@ definitions:
       - filename
       - request_type
     properties:
-      bucketId:
+      bucket_id:
         type: integer
         format: int64
-      filename:
+      file_name:
         type: string
       request_type:
         type: string
