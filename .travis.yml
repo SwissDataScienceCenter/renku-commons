@@ -1,10 +1,39 @@
+branches:
+  only:
+  - master
 language: scala
 scala:
 - '2.11.8'
 matrix:
   include:
+  - env: COMPONENT=deploy-service
+    script: cd $COMPONENT && sbt ++$TRAVIS_SCALA_VERSION test
   - env: COMPONENT=graph-core
     script: cd $COMPONENT && sbt ++$TRAVIS_SCALA_VERSION test
   - env: COMPONENT=graph-init
     script: cd $COMPONENT && sbt ++$TRAVIS_SCALA_VERSION test
-
+  - env: COMPONENT=graph-mutation-service
+    script: cd $COMPONENT && sbt ++$TRAVIS_SCALA_VERSION test
+  - env: COMPONENT=graph-mutation-worker
+    script: cd $COMPONENT && sbt ++$TRAVIS_SCALA_VERSION test
+  - env: COMPONENT=graph-navigation-service
+    script: cd $COMPONENT && sbt ++$TRAVIS_SCALA_VERSION test
+  - env: COMPONENTgraph-typesystem-persistence
+    script: cd $COMPONENT && sbt ++$TRAVIS_SCALA_VERSION test
+  - env: COMPONENT=graph-typesystem-service
+    script: cd $COMPONENT && sbt ++$TRAVIS_SCALA_VERSION test
+  - env: COMPONENT=resource-manager-service
+    script: cd $COMPONENT && sbt ++$TRAVIS_SCALA_VERSION test
+  - env: COMPONENT=service-commons
+    script: cd $COMPONENT && sbt ++$TRAVIS_SCALA_VERSION test
+  - env: COMPONENT=storage-service
+    script: cd $COMPONENT && sbt ++$TRAVIS_SCALA_VERSION test
+# caching suggestions from http://www.scala-sbt.org/0.13/docs/Travis-CI-with-sbt.html
+cache:
+  directories:
+    - $HOME/.ivy2/cache
+    - $HOME/.sbt
+before_cache:
+  # Cleanup the cached directories to avoid unnecessary cache updates
+  - find $HOME/.ivy2/cache -name "ivydata-*.properties" -print -delete
+  - find $HOME/.sbt        -name "*.lock"               -print -delete
