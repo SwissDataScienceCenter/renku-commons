@@ -33,6 +33,7 @@ object ScopeQualifier {
     case StorageRead.name => StorageRead
     case StorageWrite.name => StorageWrite
     case StorageCreate.name => StorageCreate
+    case DeploymentCreate.name => DeploymentCreate
     case BucketCreate.name => BucketCreate
   }
 
@@ -43,5 +44,7 @@ object ScopeQualifier {
   case object StorageCreate extends ScopeQualifier("storage:create")
 
   case object BucketCreate extends ScopeQualifier("storage:bucket_create")
+
+  case object DeploymentCreate extends ScopeQualifier("deploy:create")
 
 }
