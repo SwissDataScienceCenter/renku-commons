@@ -18,7 +18,7 @@ matrix:
     script: cd $COMPONENT && sbt ++$TRAVIS_SCALA_VERSION test
   - env: COMPONENT=graph-navigation-service
     script: cd $COMPONENT && sbt ++$TRAVIS_SCALA_VERSION test
-  - env: COMPONENTgraph-typesystem-persistence
+  - env: COMPONENT=graph-typesystem-persistence
     script: cd $COMPONENT && sbt ++$TRAVIS_SCALA_VERSION test
   - env: COMPONENT=graph-typesystem-service
     script: cd $COMPONENT && sbt ++$TRAVIS_SCALA_VERSION test
