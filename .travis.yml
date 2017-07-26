@@ -28,3 +28,12 @@ matrix:
     script: cd $COMPONENT && sbt ++$TRAVIS_SCALA_VERSION test
   - env: COMPONENT=storage-service
     script: cd $COMPONENT && sbt ++$TRAVIS_SCALA_VERSION test
+# caching suggestions from http://www.scala-sbt.org/0.13/docs/Travis-CI-with-sbt.html
+cache:
+  directories:
+    - $HOME/.ivy2/cache
+    - $HOME/.sbt
+before_cache:
+  # Cleanup the cached directories to avoid unnecessary cache updates
+  - find $HOME/.ivy2/cache -name "ivydata-*.properties" -print -delete
+  - find $HOME/.sbt        -name "*.lock"               -print -delete
