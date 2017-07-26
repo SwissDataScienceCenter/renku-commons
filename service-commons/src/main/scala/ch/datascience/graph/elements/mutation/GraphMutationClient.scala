@@ -53,6 +53,20 @@ trait GraphMutationClient {
     }
   }
 
+  final def postAndWait(mutation: Mutation, timeout: Option[Deadline] = Some(1.minute.fromNow)): Future[EventStatus] = {
+    for {
+      event <- post(mutation)
+      status <- wait(event.uuid, timeout)
+    } yield status
+  }
+
+  final def postAndWait(mutation: Mutation, timeout: Duration)(implicit ec: ExecutionContext): Future[EventStatus] = {
+    for {
+      event <- post(mutation)
+      status <- wait(event.uuid, timeout)
+    } yield status
+  }
+
   def status(uuid: UUID): Future[EventStatus]
 
 }
