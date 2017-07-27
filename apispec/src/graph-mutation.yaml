@@ -35,8 +35,12 @@ paths:
       responses:
         200:
           description: 'Received mutation request'
+          schema: 
+            $ref: '#/definitions/RequestEvent'
   /mutation/{mutation-uuid}:
     get:
+      tags:
+      - 'Mutation'
       summary: 'Get mutation status'
       parameters:
       - name: 'mutation-uuid'
@@ -48,7 +52,7 @@ paths:
         200: 
           description: 'Status'
           schema: 
-            $ref: "#/definitions/EventStatus"
+            $ref: '#/definitions/EventStatus'
 definitions:
   Mutation: 
     title: 'Mutation'
@@ -206,4 +210,3 @@ definitions:
         - 'completed'
       response: 
         $ref: '#/definitions/ResponseEvent'
-        # TODO: define result object
