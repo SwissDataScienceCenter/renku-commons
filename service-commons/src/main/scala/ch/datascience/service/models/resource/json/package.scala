@@ -18,11 +18,11 @@
 
 package ch.datascience.service.models.resource
 
-import play.api.libs.json.{Format, OFormat}
+import play.api.libs.json.{ Format, OFormat }
 
 /**
-  * Created by johann on 25/04/17.
-  */
+ * Created by johann on 25/04/17.
+ */
 package object json {
 
   implicit lazy val AccessRequestFormat: OFormat[AccessRequest] = AccessRequestMappers.AccessRequestFormat
