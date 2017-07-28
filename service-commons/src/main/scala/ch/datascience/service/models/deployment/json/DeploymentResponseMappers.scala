@@ -25,8 +25,8 @@ import play.api.libs.json._
 object DeploymentResponseMappers {
 
   def DeploymentResponseFormat: OFormat[DeploymentResponse] = (
-    (JsPath \ "id").format[Long] and
-      (JsPath \ "backend_id").formatNullable[String]
-  ) (DeploymentResponse, unlift(DeploymentResponse.unapply))
+    ( JsPath \ "id" ).format[Long] and
+    ( JsPath \ "backend_id" ).formatNullable[String]
+  )( DeploymentResponse, unlift( DeploymentResponse.unapply ) )
 
 }

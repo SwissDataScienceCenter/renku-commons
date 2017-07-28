@@ -25,8 +25,8 @@ import play.api.libs.json._
 object DeploymentRequestMappers {
 
   def DeploymentRequestFormat: OFormat[DeploymentRequest] = (
-    (JsPath \ "deployment_type").format[String] and
-      (JsPath \ "options").formatNullable[JsObject]
-  ) (DeploymentRequest.apply, unlift(DeploymentRequest.unapply))
+    ( JsPath \ "deployment_type" ).format[String] and
+    ( JsPath \ "options" ).formatNullable[JsObject]
+  )( DeploymentRequest.apply, unlift( DeploymentRequest.unapply ) )
 
 }

@@ -1,3 +1,4 @@
+addSbtPlugin("org.scalariform" % "sbt-scalariform" % "1.7.1")
 /*
  * Copyright 2017 - Swiss Data Science Center (SDSC)
  * A partnership between École Polytechnique Fédérale de Lausanne (EPFL) and
@@ -16,16 +17,3 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.utils.persistence.scope
-
-import javax.inject.Inject
-
-import ch.datascience.graph.scope.persistence.remote.StandardRemotePersistenceLayer
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
-
-/**
- * Created by johann on 13/06/17.
- */
-class RemotePersistenceLayer @Inject() (
-    override val client: ScopeClient
-) extends StandardRemotePersistenceLayer( client = client )
