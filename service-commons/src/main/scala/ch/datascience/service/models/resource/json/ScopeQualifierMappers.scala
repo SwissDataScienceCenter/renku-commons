@@ -25,18 +25,18 @@ import play.api.libs.functional.syntax._
 import scala.util.Try
 
 /**
-  * Created by johann on 13/07/17.
-  */
+ * Created by johann on 13/07/17.
+ */
 object ScopeQualifierMappers {
 
-  def ScopeQualifierFormat: Format[ScopeQualifier] = Format(ScopeQualifierReads, ScopeQualifierWrites)
+  def ScopeQualifierFormat: Format[ScopeQualifier] = Format( ScopeQualifierReads, ScopeQualifierWrites )
 
   def ScopeQualifierReads: Reads[ScopeQualifier] = Reads { json =>
     json.validate[String].flatMap { str =>
-      Try{ ScopeQualifier(str) }.map(s => JsSuccess(s)).recover { case e => JsError(e.getMessage) }.get
+      Try { ScopeQualifier( str ) }.map( s => JsSuccess( s ) ).recover { case e => JsError( e.getMessage ) }.get
     }
   }
 
-  def ScopeQualifierWrites: Writes[ScopeQualifier] = implicitly[Writes[String]].contramap(_.name)
+  def ScopeQualifierWrites: Writes[ScopeQualifier] = implicitly[Writes[String]].contramap( _.name )
 
 }
