@@ -7,7 +7,7 @@ import play.api.libs.functional.syntax._
 object AccessGrantMappers {
 
   def AccessGrantFormat: OFormat[AccessGrant] = {
-    (JsPath \ "access_token").format[String].inmap(AccessGrant, unlift(AccessGrant.unapply))
+    ( JsPath \ "access_token" ).format[String].inmap( AccessGrant, unlift( AccessGrant.unapply ) )
   }
 
 }
