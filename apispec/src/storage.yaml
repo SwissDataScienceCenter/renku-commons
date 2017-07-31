@@ -17,101 +17,15 @@ produces:
 consumes:
   - application/json
 tags:
-- name: 'Explorer'
-  description: 'File explorer'
 - name: 'IO'
   description: 'Perform I/O operations'
 - name: 'Authorize'
   description: 'Request access to file resources'
 paths:
-  /explore/{bucket_id}:
+  /io/backends:
     get:
       tags:
-      - 'Explorer'
-      summary: 'Bucket metadata'
-      description: 'Access bucket metadata'
-      parameters:
-      - name: Authorization
-        in: header
-        description: 'Bearer token'
-        required: true
-        type: string
-      - name: bucket_id
-        in: path
-        description: 'Bucket graph id'
-        required: true
-        type: integer
-        format: int64
-      responses:
-        200:
-          description: 'Ok'
-        404:
-          description: 'Bucket not found'
-  /explore/file/{file_id}:
-    get:
-      tags:
-      - 'Explorer'
-      summary: 'File metadata'
-      description: 'Access file metadata'
-      parameters:
-      - name: Authorization
-        in: header
-        description: 'Bearer token'
-        required: true
-        type: string
-      - name: file_id
-        in: path
-        description: 'File graph id'
-        required: true
-        type: integer
-        format: int64
-      responses:
-        200:
-          description: 'Ok'
-        404:
-          description: 'File not found'
-  /explore/{bucket_id}/files:
-    get:
-      tags:
-      - 'Explorer'
-      summary: 'Bucket files'
-      description: 'List all files in a bucket'
-      parameters:
-      - name: Authorization
-        in: header
-        description: 'Bearer token'
-        required: true
-        type: string
-      - name: bucket_id
-        in: path
-        description: 'Bucket graph id'
-        required: true
-        type: integer
-        format: int64
-      responses:
-        200:
-          description: 'Ok'
-        404:
-          description: 'Bucket not found'
-  /explore/list:
-    get:
-      tags:
-      - 'Explorer'
-      summary: 'Bucket list'
-      description: 'List all available buckets'
-      parameters:
-      - name: Authorization
-        in: header
-        description: 'Bearer token'
-        required: true
-        type: string
-      responses:
-        200:
-          description: 'Ok'
-  /explore/backends:
-    get:
-      tags:
-      - 'Explorer'
+      - 'IO'
       summary: 'Backend list'
       description: 'List all available backends'
       parameters:
@@ -120,6 +34,7 @@ paths:
         description: 'Bearer token'
         required: true
         type: string
+        example: "Bearer "
       responses:
         200:
           description: 'Ok'
@@ -136,6 +51,7 @@ paths:
         description: 'Bearer token (from authorization request)'
         required: true
         type: string
+        example: "Bearer "
       responses:
         200:
           description: 'Successful read'
@@ -158,6 +74,7 @@ paths:
           Note: any MIME type can be used
         required: true
         type: string
+        example: "Bearer "
       - name: body
         in: body
         description: 'File content'
@@ -168,7 +85,6 @@ paths:
       responses:
         200:
           description: 'Successful write'
-
 
   /authorize/read:
     post:
@@ -193,6 +109,7 @@ paths:
         description: 'Bearer token (from authorization request)'
         required: true
         type: string
+        example: "Bearer "
       responses:
         200:
           description: ok
@@ -220,6 +137,7 @@ paths:
         description: 'Bearer token (from authorization request)'
         required: true
         type: string
+        example: "Bearer "
       responses:
         200:
           description: ok
@@ -247,6 +165,7 @@ paths:
         description: 'Bearer token (from authorization request)'
         required: true
         type: string
+        example: "Bearer "
       responses:
         200:
           description: ok
@@ -274,6 +193,7 @@ paths:
         description: 'Bearer token (from authorization request)'
         required: true
         type: string
+        example: "Bearer "
       responses:
         200:
           description: ok
@@ -282,7 +202,7 @@ definitions:
   ReadFileRequest:
     type: object
     required: 
-      - resourceId
+      - resource_id
       - request_type
     properties:
       resourceId:
@@ -295,7 +215,7 @@ definitions:
   WriteFileRequest:
     type: object
     required: 
-      - resourceId
+      - resource_id
       - request_type
     properties:
       resourceId:
