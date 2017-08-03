@@ -17,6 +17,8 @@ object ScopeQualifier {
     case StorageCreate.name    => StorageCreate
     case DeploymentCreate.name => DeploymentCreate
     case BucketCreate.name     => BucketCreate
+    case ContextsWrite.name    => ContextsWrite
+    case ContextsRead.name     => ContextsRead
   }
 
   case object StorageRead extends ScopeQualifier( "storage:read" )
@@ -29,4 +31,7 @@ object ScopeQualifier {
 
   case object DeploymentCreate extends ScopeQualifier( "deploy:create" )
 
+  case object ContextsWrite extends ScopeQualifier( "contexts:write" )
+
+  case object ContextsRead extends ScopeQualifier( "contexts:read" )
 }

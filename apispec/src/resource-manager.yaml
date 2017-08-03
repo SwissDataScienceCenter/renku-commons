@@ -88,4 +88,6 @@ definitions:
     - 'storage:write'
     - 'storage:create'
     - 'storage:bucket_create'
+    - 'contexts:read'
+    - 'contexts:write'
     title: ScopeQualifier
