@@ -111,10 +111,6 @@ definitions:
           - key: 'resource:bucket_backend'
             data_type: 'string'
             value: 'local'
-            properties:
-            - key: 'resource:creation_time'
-              data_type: 'long'
-              value: 1501138750482
         - key: 'resource:bucket_name'
           data_type: 'string'
           cardinality: 'single'
