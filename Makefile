@@ -8,6 +8,7 @@ sbt_graph_services += graph-navigation-service
 sbt_graph_services += graph-init
 
 sbt_platform_services += resource-manager-service
+sbt_platform_services += explorer-service
 sbt_platform_services += storage-service
 sbt_platform_services += deploy-service
 
