@@ -8,6 +8,8 @@ matrix:
   include:
   - env: COMPONENT=deploy-service
     script: cd $COMPONENT && sbt ++$TRAVIS_SCALA_VERSION test && bash ../travis/check-code-formatting.sh
+  - env: COMPONENT=explorer-service
+    script: cd $COMPONENT && sbt ++$TRAVIS_SCALA_VERSION test && bash ../travis/check-code-formatting.sh
   - env: COMPONENT=graph-core
     script: cd $COMPONENT && sbt ++$TRAVIS_SCALA_VERSION test && bash ../travis/check-code-formatting.sh
   - env: COMPONENT=graph-init
