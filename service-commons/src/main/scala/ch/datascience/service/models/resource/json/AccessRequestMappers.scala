@@ -28,9 +28,9 @@ import play.api.libs.json._
 object AccessRequestMappers {
 
   def AccessRequestFormat: OFormat[AccessRequest] = (
-    ( JsPath \ "permission_holder_id" ).formatNullable[AccessRequest#PermissionHolderId] and
+    ( JsPath \ "resource_id" ).formatNullable[AccessRequest#PermissionHolderId] and
     ( JsPath \ "scope" ).format[Seq[ScopeQualifier]] and
-    ( JsPath \ "extra_claims" ).formatNullable[JsObject]
+    ( JsPath \ "service_claims" ).formatNullable[JsObject]
   )( { ( i, s, e ) => AccessRequest( i, s.toSet, e ) }, { req => ( req.permissionHolderId, req.scope.toSeq, req.extraClaims ) } )
 
 }
