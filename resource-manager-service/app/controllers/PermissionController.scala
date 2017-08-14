@@ -31,6 +31,8 @@ class PermissionController @Inject() (
 
   val verifier: JWTVerifier = verifierProvider.get
 
+  val jwtNamespace: String = "https://rm.datascience.ch"
+
   def authorize: Action[AccessRequest] = TokenFilterAction( verifier ).async( bodyParseJson[AccessRequest] ) { implicit request =>
     val accessRequest = request.body
     val accessToken = request.token
@@ -48,11 +50,11 @@ class PermissionController @Inject() (
       val tokenBuilder = JWT.create()
       tokenBuilder.withSubject( accessToken.getSubject )
       for ( resourceId <- accessRequest.permissionHolderId ) {
-        tokenBuilder.withClaim( "resource_id", Long.box( resourceId ) )
+        tokenBuilder.withClaim( s"$jwtNamespace/resource_id", Long.box( resourceId ) )
       }
-      tokenBuilder.withArrayClaim( "resource_scope", scope.toArray.map( _.name ) )
+      tokenBuilder.withArrayClaim( s"$jwtNamespace/scope", scope.toArray.map( _.name ) )
       for ( extraClaims <- accessRequest.extraClaims ) {
-        tokenBuilder.withClaim( "resource_extras", extraClaims.toString() )
+        tokenBuilder.withClaim( s"$jwtNamespace/service_claims", extraClaims.toString() )
       }
       tokenSignerProvider.addDefaultHeadersAndClaims( tokenBuilder )
       tokenBuilder.sign( tokenSignerProvider.get )

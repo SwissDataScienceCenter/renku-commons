@@ -48,16 +48,39 @@ definitions:
     required:
     - scope
     properties:
-      permission_holder_id:
+      resource_id:
         type: integer
         format: int64
       scope:
         type: array
         items:
           $ref: '#/definitions/ScopeQualifier'
-      extra_claims:
+      service_claims:
         type: object
         description: Custom claims added by the requesting service
+  AccessGrant:
+    type: object
+    required:
+    - access_token
+    properties:
+      access_token:
+        type: string
+        description: Authorization token, for the custom claims see AccessGrantToken
+  AccessGrantToken:
+    type: object
+    required:
+    - scope
+    properties:
+      https://rm.datascience.ch/resource_id:
+        type: integer
+        format: int64
+      https://rm.datascience.ch/scope:
+        type: array
+        items:
+          $ref: '#/definitions/ScopeQualifier'
+      https://rm.datascience.ch/service_claims:
+        type: string
+        description: Equals to `service_claims` from request, but JSON serialized as string
   ScopeQualifier:
     type: string
     enum:
