@@ -40,6 +40,7 @@ lazy val play_version = "2.5.14"
 libraryDependencies += "com.typesafe.play" %% "play" % play_version
 libraryDependencies += "com.typesafe.play" %% "play-json" % play_version
 libraryDependencies += "com.typesafe.play" %% "play-ws" % play_version
+libraryDependencies += "com.typesafe.play" %% "play-test" % play_version % Test
 
 lazy val java_jwt_version = "3.2.0"
 libraryDependencies += "com.auth0" % "java-jwt" % java_jwt_version
