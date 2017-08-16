@@ -58,6 +58,10 @@ definitions:
       service_claims:
         type: object
         description: Custom claims added by the requesting service
+    example:
+      scope: 'storage:bucket_create'
+      service_claims:
+        custom: 42
   AccessGrant:
     type: object
     required:
