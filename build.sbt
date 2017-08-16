@@ -1,18 +1,17 @@
 organization := "ch.datascience"
 version := "0.1.0-SNAPSHOT"
 scalaVersion := "2.11.8"
+name := "renga-commons"
 
-lazy val projectName = "service-commons"
-name := projectName
+lazy val root = (project in file("."))
+  .dependsOn(
+    `graph-core`
+  )
 
-lazy val root = Project(
-  id   = projectName,
-  base = file(".")
-).dependsOn(
-  core
-)
-
-lazy val core = RootProject(file("../graph-core"))
+lazy val rengaGraphUri = uri(s"$rengaGraphRepo#$rengaGraphRef")
+lazy val rengaGraphRepo = "ssh://git@github.com/SwissDataScienceCenter/renga-graph.git"
+lazy val rengaGraphRef = "new-build"
+lazy val `graph-core` = ProjectRef(rengaGraphUri, "core")
 
 resolvers += DefaultMavenRepository
 resolvers += "jitpack" at "https://jitpack.io"
