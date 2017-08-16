@@ -33,11 +33,11 @@ object ScopeQualifier {
 
   case object DeploymentCreate extends ScopeQualifier( "deploy:create" )
 
-  case object ContextsWrite extends ScopeQualifier( "contexts:write" )
+  case object ContextsWrite extends ScopeQualifier( "deployer:contexts_write" )
 
-  case object ContextsRead extends ScopeQualifier( "contexts:read" )
+  case object ContextsRead extends ScopeQualifier( "deployer:contexts_read" )
 
-  case object ExecutionsWrite extends ScopeQualifier( "executions:write" )
+  case object ExecutionsWrite extends ScopeQualifier( "deployer:executions_write" )
 
-  case object ExecutionsRead extends ScopeQualifier( "executions:read" )
+  case object ExecutionsRead extends ScopeQualifier( "deployer:executions_read" )
 }

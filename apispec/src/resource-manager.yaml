@@ -88,8 +88,8 @@ definitions:
     - 'storage:write'
     - 'storage:create'
     - 'storage:bucket_create'
-    - 'contexts:read'
-    - 'contexts:write'
-    - 'executions:read'
-    - 'executions:write'
+    - 'deployer:contexts_read'
+    - 'deployer:contexts_write'
+    - 'deployer:executions_read'
+    - 'deployer:executions_write'
     title: ScopeQualifier

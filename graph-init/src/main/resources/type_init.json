@@ -71,7 +71,7 @@
     {
       "key": "deployer:context_spec_ports",
       "data_type": "string",
-      "cardinality": "single"
+      "cardinality": "set"
     },
     {
       "key": "deployer:execution_id",
