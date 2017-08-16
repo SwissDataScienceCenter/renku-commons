@@ -35,7 +35,7 @@ paths:
       responses:
         200:
           description: 'Received mutation request'
-          schema: 
+          schema:
             $ref: '#/definitions/RequestEvent'
   /mutation/{mutation-uuid}:
     get:
@@ -48,32 +48,33 @@ paths:
         description: 'the uuid representing the graph mutation'
         type: 'string'
         required: true
-      responses: 
-        200: 
+      responses:
+        200:
           description: 'Status'
-          schema: 
+          schema:
             $ref: '#/definitions/EventStatus'
 definitions:
-  Mutation: 
+  Mutation:
     title: 'Mutation'
     type: object
     required:
     - operations
-    properties: 
-      operations: 
+    properties:
+      operations:
         type: array
-        items: 
+        items:
           $ref: '#/definitions/Operation'
         minItems: 1
     example:
       operations:
       - $ref: '#/definitions/CreateVertexOperation/example'
       - $ref: '#/definitions/CreateEdgeOperation/example'
-  Operation: 
+      - $ref: '#/definitions/CreateVertexPropertyOperation/example'
+  Operation:
     title: 'Operation'
     type: object
     discriminator: 'type'
-    required: 
+    required:
     - 'type'
     properties:
       type:
@@ -86,7 +87,7 @@ definitions:
   CreateVertexOperation:
     title: 'CreateVertexOperation'
     type: object
-    required: 
+    required:
     - 'type'
     - 'element'
     properties:
@@ -125,7 +126,7 @@ definitions:
   CreateEdgeOperation:
     title: 'CreateEdgeOperation'
     type: object
-    required: 
+    required:
     - 'type'
     - 'element'
     properties:
@@ -135,19 +136,57 @@ definitions:
         - 'create_edge'
       element:
         type: object
-        # TODO: define NewVertex
+        # TODO: define NewEdge
     example:
       type: 'create_edge'
-      # TODO: example
-  RequestEvent: 
+      element:
+        label: 'deploy:subprocess'
+        from:
+          type: 'new_vertex'
+          id: 0
+        to:
+          type: 'persisted_vertex'
+          id: 4321
+        properties:
+        - key: 'system:creation_time'
+          data_type: 'long'
+          value: 1502863673203
+  CreateVertexPropertyOperation:
+    title: 'CreateVertexPropertyOperation'
+    type: object
+    required:
+    - 'type'
+    - 'element'
+    properties:
+      type:
+        type: string
+        enum:
+        - 'create_vertex_property'
+      element:
+        type: object
+        # TODO: define NewRichProperty
+    example:
+      type: 'create_vertex_property'
+      element:
+        parent:
+          type: vertex'
+          id: 4321
+        key: 'deploy:status'
+        data_type: 'string'
+        value: 'created'
+        properties:
+        - key: 'system:creation_time'
+          data_type: 'long'
+          value: 1502863341025
+  RequestEvent:
     type: object
     title: 'RequestEvent'
-    required: 
+    required:
     - 'uuid'
     - 'event'
     - 'timestamp'
-    properties: 
-      uuid: 
+    properties:
+      uuid:
         type: string
       event:
         type: object
@@ -162,12 +201,12 @@ definitions:
   ResponseEvent:
     type: object
     title: 'ResponseEvent'
-    required: 
+    required:
     - 'uuid'
     - 'event'
     - 'timestamp'
-    properties: 
-      uuid: 
+    properties:
+      uuid:
         type: string
       event:
         type: object
@@ -176,7 +215,7 @@ definitions:
         properties:
           status:
             type: 'string'
-            enum: 
+            enum:
             - 'success'
             - 'failed'
           results:
@@ -194,19 +233,19 @@ definitions:
       timestamp:
         type: 'string'
         format: 'dateTime'
-  EventStatus: 
+  EventStatus:
     type: 'object'
     title: 'EventStatus'
-    required: 
+    required:
     - 'request'
     - 'status'
-    properties: 
+    properties:
       request:
         $ref: '#/definitions/RequestEvent'
-      status: 
+      status:
         type: 'string'
-        enum: 
+        enum:
         - 'pending'
         - 'completed'
-      response: 
+      response:
         $ref: '#/definitions/ResponseEvent'
