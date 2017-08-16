@@ -90,4 +90,6 @@ definitions:
     - 'storage:bucket_create'
     - 'contexts:read'
     - 'contexts:write'
+    - 'executions:read'
+    - 'executions:write'
     title: ScopeQualifier
