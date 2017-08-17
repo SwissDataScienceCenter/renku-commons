@@ -23,13 +23,15 @@ name := "renga-commons"
 
 lazy val root = (project in file("."))
   .dependsOn(
-    `graph-core`
+    `graph-core`,
+    `graph-init` % "test->compile"
   )
 
 lazy val rengaGraphUri = uri(s"$rengaGraphRepo#$rengaGraphRef")
 lazy val rengaGraphRepo = "ssh://git@github.com/SwissDataScienceCenter/renga-graph.git"
-lazy val rengaGraphRef = "master"
+lazy val rengaGraphRef = "complete-dummy-scope"
 lazy val `graph-core` = ProjectRef(rengaGraphUri, "core")
+lazy val `graph-init` = ProjectRef(rengaGraphUri, "init")
 
 resolvers += DefaultMavenRepository
 resolvers += "jitpack" at "https://jitpack.io"

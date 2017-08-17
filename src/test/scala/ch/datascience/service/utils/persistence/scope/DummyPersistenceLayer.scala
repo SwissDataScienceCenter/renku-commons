@@ -18,12 +18,9 @@
 
 package ch.datascience.service.utils.persistence.scope
 
-import javax.inject.{ Inject, Singleton }
+import javax.inject.Singleton
 
-import ch.datascience.graph.scope.{ Scope => Base }
+import ch.datascience.graph.scope.persistence.dummy.{ DummyPersistenceLayer => Base }
 
-/**
- * Created by johann on 13/06/17.
- */
 @Singleton
-class Scope @Inject() ( override protected val persistenceLayer: RemotePersistenceLayer ) extends Base( persistenceLayer = persistenceLayer )
+class DummyPersistenceLayer() extends Base
