@@ -102,7 +102,8 @@ definitions:
       type: 'create_vertex'
       element:
         temp_id: 0
-        types: 'resource:bucket'
+        types:
+        - 'resource:bucket'
         properties:
         - key: 'resource:bucket_backend'
           data_type: 'string'
