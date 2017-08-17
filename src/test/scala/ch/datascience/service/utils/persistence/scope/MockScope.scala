@@ -15,6 +15,8 @@ class MockScope @Inject() ( override protected val persistenceLayer: MockPersist
   extends Scope( persistenceLayer = persistenceLayer )
   with DummyScope {
 
+  init()
+
   def init(): Unit = {
     val typeInitJson: JsValue = Json.parse( readResource( "/type_init.json" ) )
     val typeInit = typeInitJson.as[TypeInit]( TypeInitFormat )
