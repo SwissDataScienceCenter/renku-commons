@@ -11,8 +11,9 @@ import play.api.libs.json.{ JsValue, Json }
  * Created by johann on 13/06/17.
  */
 @Singleton
-class MockScope @Inject() ( override protected val persistenceLayer: DummyPersistenceLayer )
-  extends DummyScope( persistenceLayer = persistenceLayer ) {
+class MockScope @Inject() ( override protected val persistenceLayer: MockPersistenceLayer )
+  extends Scope( persistenceLayer = persistenceLayer )
+  with DummyScope {
 
   def init(): Unit = {
     val typeInitJson: JsValue = Json.parse( readResource( "/type_init.json" ) )
