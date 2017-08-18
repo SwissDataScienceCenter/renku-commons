@@ -11,7 +11,7 @@ lazy val root = (project in file("."))
 
 lazy val rengaGraphUri = uri(s"$rengaGraphRepo#$rengaGraphRef")
 lazy val rengaGraphRepo = "ssh://git@github.com/SwissDataScienceCenter/renga-graph.git"
-lazy val rengaGraphRef = "complete-dummy-scope"
+lazy val rengaGraphRef = "master"
 lazy val `graph-core` = ProjectRef(rengaGraphUri, "core")
 lazy val `graph-init` = ProjectRef(rengaGraphUri, "init")
 
