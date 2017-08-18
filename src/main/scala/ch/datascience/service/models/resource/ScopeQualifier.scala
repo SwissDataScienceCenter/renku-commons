@@ -12,11 +12,14 @@ object ScopeQualifier {
   def valueOf( name: String ): ScopeQualifier = ScopeQualifier.apply( name )
 
   def apply( name: String ): ScopeQualifier = name.toLowerCase match {
-    case StorageRead.name      => StorageRead
-    case StorageWrite.name     => StorageWrite
-    case StorageCreate.name    => StorageCreate
-    case DeploymentCreate.name => DeploymentCreate
-    case BucketCreate.name     => BucketCreate
+    case StorageRead.name     => StorageRead
+    case StorageWrite.name    => StorageWrite
+    case StorageCreate.name   => StorageCreate
+    case BucketCreate.name    => BucketCreate
+    case ContextsWrite.name   => ContextsWrite
+    case ContextsRead.name    => ContextsRead
+    case ExecutionsWrite.name => ExecutionsWrite
+    case ExecutionsRead.name  => ExecutionsRead
   }
 
   case object StorageRead extends ScopeQualifier( "storage:read" )
@@ -27,6 +30,11 @@ object ScopeQualifier {
 
   case object BucketCreate extends ScopeQualifier( "storage:bucket_create" )
 
-  case object DeploymentCreate extends ScopeQualifier( "deploy:create" )
+  case object ContextsWrite extends ScopeQualifier( "deployer:contexts_write" )
 
+  case object ContextsRead extends ScopeQualifier( "deployer:contexts_read" )
+
+  case object ExecutionsWrite extends ScopeQualifier( "deployer:executions_write" )
+
+  case object ExecutionsRead extends ScopeQualifier( "deployer:executions_read" )
 }
