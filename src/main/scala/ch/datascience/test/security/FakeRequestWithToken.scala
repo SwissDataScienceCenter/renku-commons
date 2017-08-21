@@ -16,19 +16,21 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.utils.persistence.graph
+package ch.datascience.test.security
 
-import javax.inject.{ Inject, Singleton }
+import play.api.mvc.RequestHeader
+import play.api.test.FakeRequest
 
-import org.janusgraph.core.{ JanusGraph, JanusGraphFactory }
-import play.api.inject.ApplicationLifecycle
+object FakeRequestWithToken {
 
-@Singleton
-class MockJanusGraphProvider @Inject() (
-    override protected val config:    JanusGraphConfigProvider,
-    override protected val lifecycle: ApplicationLifecycle
-) extends JanusGraphProvider( config, lifecycle ) {
+  implicit class RichFakeRequest[A]( underlying: FakeRequest[A] ) {
 
-  override lazy val graph: JanusGraph = JanusGraphFactory.build().set( "storage.backend", "inmemory" ).open()
+    def withToken( token: String ): FakeRequest[A] = {
+      val newTags: Map[String, String] = underlying.tags + ( "VERIFIED_TOKEN" -> token )
+
+      underlying.copyFakeRequest( tags = newTags ).withHeaders( "Authorization" -> s"Bearer $token" )
+    }
+
+  }
 
 }
