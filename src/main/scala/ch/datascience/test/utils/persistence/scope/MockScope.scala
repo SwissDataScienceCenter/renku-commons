@@ -1,10 +1,11 @@
-package ch.datascience.service.utils.persistence.scope
+package ch.datascience.test.utils.persistence.scope
 
 import javax.inject.{ Inject, Singleton }
 
 import ch.datascience.graph.init.InitApplication.readResource
 import ch.datascience.graph.init.{ TypeInit, TypeInitFormat }
 import ch.datascience.graph.scope.persistence.dummy.DummyScope
+import ch.datascience.service.utils.persistence.scope.Scope
 import play.api.libs.json.{ JsValue, Json }
 
 /**

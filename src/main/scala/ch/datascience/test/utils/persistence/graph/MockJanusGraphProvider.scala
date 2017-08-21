@@ -1,7 +1,8 @@
-package ch.datascience.service.utils.persistence.graph
+package ch.datascience.test.utils.persistence.graph
 
 import javax.inject.{ Inject, Singleton }
 
+import ch.datascience.service.utils.persistence.graph.{ JanusGraphConfigProvider, JanusGraphProvider }
 import org.janusgraph.core.{ JanusGraph, JanusGraphFactory }
 import play.api.inject.ApplicationLifecycle
 

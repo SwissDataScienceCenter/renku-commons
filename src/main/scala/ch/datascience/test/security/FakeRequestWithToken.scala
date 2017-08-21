@@ -1,4 +1,4 @@
-package ch.datascience.service.security
+package ch.datascience.test.security
 
 import play.api.mvc.RequestHeader
 import play.api.test.FakeRequest

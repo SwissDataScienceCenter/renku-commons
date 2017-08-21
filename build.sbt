@@ -10,13 +10,13 @@ resolvers += "SDSC Snapshots" at "https://testing.datascience.ch:18081/repositor
 
 lazy val renga_version = "0.1.0-SNAPSHOT"
 libraryDependencies += "ch.datascience" %% "renga-graph-core" % renga_version
-libraryDependencies += "ch.datascience" %% "renga-graph-init" % renga_version % Test
+libraryDependencies += "ch.datascience" %% "renga-graph-init" % renga_version
 
 lazy val play_version = "2.5.14"
 libraryDependencies += "com.typesafe.play" %% "play" % play_version
 libraryDependencies += "com.typesafe.play" %% "play-json" % play_version
 libraryDependencies += "com.typesafe.play" %% "play-ws" % play_version
-libraryDependencies += "com.typesafe.play" %% "play-test" % play_version % Test
+libraryDependencies += "com.typesafe.play" %% "play-test" % play_version
 
 lazy val java_jwt_version = "3.2.0"
 libraryDependencies += "com.auth0" % "java-jwt" % java_jwt_version
