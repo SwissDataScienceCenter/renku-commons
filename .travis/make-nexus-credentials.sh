@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CREDENTIALS_DIR="$HOME/.ivy2/.credentials"
+CREDENTIALS_DIR="$HOME/.ivy2"
 mkdir -p "$CREDENTIALS_DIR"
 
 CREDENTIALS="$CREDENTIALS_DIR/.credentials"
