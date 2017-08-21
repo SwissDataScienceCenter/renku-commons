@@ -1,8 +1,9 @@
-package ch.datascience.service.utils.persistence.scope
+package ch.datascience.test.utils.persistence.scope
 
 import javax.inject.Singleton
 
 import ch.datascience.graph.types.{ NamedType, PropertyKey }
+import ch.datascience.service.utils.persistence.scope.RemotePersistenceLayer
 
 import scala.concurrent.Future
 
