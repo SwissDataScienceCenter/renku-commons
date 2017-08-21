@@ -4,7 +4,10 @@ branches:
 language: scala
 scala:
 - '2.11.8'
-script: sbt ++$TRAVIS_SCALA_VERSION test && bash ./.travis/check-code-formatting.sh
+before_script: ./.travis/make-nexus-credentials.sh
+script:
+- sbt ++$TRAVIS_SCALA_VERSION test && bash ./.travis/check-code-formatting.sh
+- sbt publish
 
 # caching suggestions from http://www.scala-sbt.org/0.13/docs/Travis-CI-with-sbt.html
 cache:
