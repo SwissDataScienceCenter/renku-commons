@@ -42,6 +42,8 @@ libraryDependencies += "com.auth0" % "java-jwt" % java_jwt_version
 lazy val janusgraph_version = "0.1.0"
 libraryDependencies += "org.janusgraph" % "janusgraph-core" % janusgraph_version
 
+libraryDependencies += "com.fasterxml.jackson.dataformat" % "jackson-dataformat-yaml" % "2.8.9"
+
 // Source code formatting
 import scalariform.formatter.preferences._
 import com.typesafe.sbt.SbtScalariform
