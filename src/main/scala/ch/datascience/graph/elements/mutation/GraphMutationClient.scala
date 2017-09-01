@@ -21,6 +21,8 @@ package ch.datascience.graph.elements.mutation
 import java.util.UUID
 
 import ch.datascience.graph.elements.mutation.log.model.{ Event, EventStatus }
+import ch.datascience.service.security.TokenProvider
+import play.api.Configuration
 import play.api.libs.ws.WSClient
 
 import scala.concurrent.{ Await, ExecutionContext, Future }
@@ -73,20 +75,24 @@ trait GraphMutationClient {
 
 object GraphMutationClient {
 
-  def apply( baseUrl: String, context: ExecutionContext, ws: WSClient ): GraphMutationClient = new ImplGraphMutationClient( baseUrl, context, ws )
+  def apply( baseUrl: String, tokenProvider: TokenProvider, context: ExecutionContext, ws: WSClient ): GraphMutationClient = {
+    new ImplGraphMutationClient( baseUrl, tokenProvider, context, ws )
+  }
 
-  def makeStandaloneClient( baseUrl: String ): GraphMutationClient with AutoCloseable = {
+  def makeStandaloneClient( baseUrl: String, config: Configuration ): GraphMutationClient with AutoCloseable = {
     import akka.actor.ActorSystem
     import akka.stream.ActorMaterializer
     import play.api.libs.ws.ahc.AhcWSClient
 
-    implicit val system = ActorSystem()
-    implicit val materializer = ActorMaterializer()
+    implicit val system: ActorSystem = ActorSystem()
+    implicit val materializer: ActorMaterializer = ActorMaterializer()
     val wsClient = AhcWSClient()
 
     val ec: ExecutionContext = scala.concurrent.ExecutionContext.global
 
-    class StandaloneGraphMutationClient extends ImplGraphMutationClient( baseUrl, ec, wsClient ) with AutoCloseable {
+    val tokenProvider = new TokenProvider( config, wsClient )( ec )
+
+    class StandaloneGraphMutationClient extends ImplGraphMutationClient( baseUrl, tokenProvider, ec, wsClient ) with AutoCloseable {
       def close(): Unit = {
         wsClient.close()
         materializer.shutdown()
