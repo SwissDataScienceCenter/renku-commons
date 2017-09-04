@@ -25,7 +25,17 @@ sealed abstract class ScopeQualifier( val name: String )
 
 object ScopeQualifier {
 
-  val scopes: Set[ScopeQualifier] = Set( StorageRead, StorageWrite, StorageCreate, BucketCreate )
+  val scopes: Set[ScopeQualifier] = Set(
+    StorageRead,
+    StorageWrite,
+    StorageCreate,
+    BucketCreate,
+    ContextsWrite,
+    ContextsRead,
+    ExecutionsWrite,
+    ExecutionsRead,
+    ProjectCreate
+  )
 
   def valueOf( name: String ): ScopeQualifier = ScopeQualifier.apply( name )
 
@@ -38,6 +48,7 @@ object ScopeQualifier {
     case ContextsRead.name    => ContextsRead
     case ExecutionsWrite.name => ExecutionsWrite
     case ExecutionsRead.name  => ExecutionsRead
+    case ProjectCreate.name   => ProjectCreate
   }
 
   case object StorageRead extends ScopeQualifier( "storage:read" )
@@ -55,4 +66,7 @@ object ScopeQualifier {
   case object ExecutionsWrite extends ScopeQualifier( "deployer:executions_write" )
 
   case object ExecutionsRead extends ScopeQualifier( "deployer:executions_read" )
+
+  case object ProjectCreate extends ScopeQualifier( "project:create" )
+
 }
