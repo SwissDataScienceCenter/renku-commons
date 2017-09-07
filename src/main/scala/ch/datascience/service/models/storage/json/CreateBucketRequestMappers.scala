@@ -28,7 +28,30 @@ object CreateBucketRequestMappers {
   def CreateBucketRequestFormat: OFormat[CreateBucketRequest] = RequestTypeMappers.format( "create_bucket" )( (
     ( JsPath \ "name" ).format[String] and
     ( JsPath \ "backend" ).format[String] and
-    ( JsPath \ "options" ).formatNullable[JsObject]
-  )( CreateBucketRequest.apply, unlift( CreateBucketRequest.unapply ) ) )
+    ( JsPath \ "options" ).formatNullable[JsObject] and
+    ( JsPath \ "labels" ).formatNullable[Seq[String]] and
+    ( JsPath \ "project_id" ).formatNullable[String]
+  )( read, write ) )
+
+  private[this] def read(
+      name:           String,
+      backend:        String,
+      backendOptions: Option[JsObject],
+      labels:         Option[Seq[String]],
+      projectId:      Option[String]
+  ): CreateBucketRequest = {
+    CreateBucketRequest(
+      name,
+      backend,
+      backendOptions,
+      labels.map( _.toSet ).getOrElse( Set.empty ),
+      projectId.map( _.toLong )
+    )
+  }
+
+  private[this] def write( request: CreateBucketRequest ): ( String, String, Option[JsObject], Option[Seq[String]], Option[String] ) = {
+    val labels = if ( request.labels.isEmpty ) None else Some( request.labels.toSeq )
+    ( request.name, request.backend, request.backendOptions, labels, request.projectId.map( _.toString ) )
+  }
 
 }

@@ -18,6 +18,7 @@
 
 package ch.datascience.service.models.storage.json
 
+import ch.datascience.graph.Constants.VertexId
 import ch.datascience.service.models.resource.json.RequestTypeMappers
 import ch.datascience.service.models.storage.CreateFileRequest
 import play.api.libs.functional.syntax._
@@ -29,8 +30,29 @@ import play.api.libs.json._
 private[json] object CreateFileRequestMappers {
 
   def CreateFileRequestFormat: OFormat[CreateFileRequest] = RequestTypeMappers.format( "create_file" )( (
-    ( JsPath \ "bucket_id" ).format[Long] and
-    ( JsPath \ "file_name" ).format[String]
-  )( CreateFileRequest.apply, unlift( CreateFileRequest.unapply ) ) )
+    ( JsPath \ "bucket_id" ).format[VertexId] and
+    ( JsPath \ "file_name" ).format[String] and
+    ( JsPath \ "labels" ).formatNullable[Seq[String]] and
+    ( JsPath \ "project_id" ).formatNullable[String]
+  )( read, write ) )
+
+  private[this] def read(
+      bucketId:  VertexId,
+      fileName:  String,
+      labels:    Option[Seq[String]],
+      projectId: Option[String]
+  ): CreateFileRequest = {
+    CreateFileRequest(
+      bucketId,
+      fileName,
+      labels.map( _.toSet ).getOrElse( Set.empty ),
+      projectId.map( _.toLong )
+    )
+  }
+
+  private[this] def write( request: CreateFileRequest ): ( VertexId, String, Option[Seq[String]], Option[String] ) = {
+    val labels = if ( request.labels.isEmpty ) None else Some( request.labels.toSeq )
+    ( request.bucketId, request.fileName, labels, request.projectId.map( _.toString ) )
+  }
 
 }
