@@ -18,6 +18,7 @@
 
 package ch.datascience.service.models.storage
 
+import ch.datascience.graph.Constants.VertexId
 import ch.datascience.service.models.resource.{ ScopeQualifier, SingleScopeAccessRequest }
 import play.api.libs.json.JsObject
 
@@ -27,7 +28,9 @@ import play.api.libs.json.JsObject
 case class CreateBucketRequest(
     name:           String,
     backend:        String,
-    backendOptions: Option[JsObject]
+    backendOptions: Option[JsObject],
+    labels:         Set[String],
+    projectId:      Option[VertexId]
 ) extends SingleScopeAccessRequest.ToSingleScopeAccessRequest {
 
   def toAccessRequest( extraClaims: Option[JsObject] ): SingleScopeAccessRequest = {
