@@ -26,10 +26,9 @@ import play.api.libs.json.JsObject
  * Created by johann on 13/07/17.
  */
 case class CreateFileRequest(
-    bucketId:  AccessRequest#PermissionHolderId,
-    fileName:  String,
-    labels:    Set[String],
-    projectId: Option[VertexId]
+    bucketId: AccessRequest#PermissionHolderId,
+    fileName: String,
+    labels:   Set[String]
 ) extends SingleScopeAccessRequest.ToSingleScopeAccessRequest {
 
   def toAccessRequest( extraClaims: Option[JsObject] ): SingleScopeAccessRequest = {

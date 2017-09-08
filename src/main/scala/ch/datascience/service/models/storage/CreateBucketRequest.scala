@@ -29,8 +29,7 @@ case class CreateBucketRequest(
     name:           String,
     backend:        String,
     backendOptions: Option[JsObject],
-    labels:         Set[String],
-    projectId:      Option[VertexId]
+    labels:         Set[String]
 ) extends SingleScopeAccessRequest.ToSingleScopeAccessRequest {
 
   def toAccessRequest( extraClaims: Option[JsObject] ): SingleScopeAccessRequest = {
