@@ -32,27 +32,24 @@ private[json] object CreateFileRequestMappers {
   def CreateFileRequestFormat: OFormat[CreateFileRequest] = RequestTypeMappers.format( "create_file" )( (
     ( JsPath \ "bucket_id" ).format[VertexId] and
     ( JsPath \ "file_name" ).format[String] and
-    ( JsPath \ "labels" ).formatNullable[Seq[String]] and
-    ( JsPath \ "project_id" ).formatNullable[String]
+    ( JsPath \ "labels" ).formatNullable[Seq[String]]
   )( read, write ) )
 
   private[this] def read(
-      bucketId:  VertexId,
-      fileName:  String,
-      labels:    Option[Seq[String]],
-      projectId: Option[String]
+      bucketId: VertexId,
+      fileName: String,
+      labels:   Option[Seq[String]]
   ): CreateFileRequest = {
     CreateFileRequest(
       bucketId,
       fileName,
-      labels.map( _.toSet ).getOrElse( Set.empty ),
-      projectId.map( _.toLong )
+      labels.map( _.toSet ).getOrElse( Set.empty )
     )
   }
 
-  private[this] def write( request: CreateFileRequest ): ( VertexId, String, Option[Seq[String]], Option[String] ) = {
+  private[this] def write( request: CreateFileRequest ): ( VertexId, String, Option[Seq[String]] ) = {
     val labels = if ( request.labels.isEmpty ) None else Some( request.labels.toSeq )
-    ( request.bucketId, request.fileName, labels, request.projectId.map( _.toString ) )
+    ( request.bucketId, request.fileName, labels )
   }
 
 }
