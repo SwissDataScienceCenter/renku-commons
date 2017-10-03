@@ -3,8 +3,11 @@ branches:
   - master
 language: scala
 scala:
-- '2.11.8'
-before_script: bash ./.travis/make-nexus-credentials.sh
+- 2.11.8
+env:
+  global:
+  - secure: HHEyObju6Sl1qUc0UpuEjwWRi1bW/qy1rHoEyUKCyLKewAyPldbP/rtVcSeslQhXuRGKej2fXKyJcGy5WCDnhtRIMkQqSAaGBghJF9RJx75+Zqtcg/11S5tP0+awu+mL8d9uCI+mCGJssMENdj16AWeoQMEYQX0xPqY/sjNanseKYVmADpxQLYxqAecNsw9hVJzUpKEbSjU6bHybqMk3tx2FjHOl2Ca7vwrltNdi3haTY9IfDbqCWh6H37uGHGWNOjjYfKt0E6k+DCrBdrYvgj8HVNQ3DVCSbEs4seU0rn2hMa9sRAhZLWbeuNmDCoVt0LU/dGQePTzii26+vR4z4Ffq8RC0cdB6ufecALcTf6j/OtnjOFDvTNjwepuyUwsUsX1bpiCQv60k7EJtZICZBY8DFK/eiyPMDqbDAsgipZzZCSnZbWjUQuTyn09oEF+bLp2uceOV10pJ5CAhV+Vw1+QPwcPm6WlmtxF8zBnIeg2B4pCFN/+3uBPc+ldPOHtNfAyllzAK1HP2JWCyXk052+H6Q/aQSHGhAjCtJ/1h5hJK51VAfAFLupahiuBRtbjWe1lTxNTc1R8kFtwcdPLsau2lBrR4y2hwcUtIn0OL1Vqy7Ev7uSq0Z8sJuKHe7ZIV5B3CjUJ68uF08JshZ/zvwiYbUHR65YyKzsftE+7dVYQ=
+  - secure: P7VGSYnIWnia945mspeG1VlecFEFjPebrtdc6LPwuADjxDX/GSt19fghvAozv9zDkjYLQslwCg5aKc3FyCd8UZDLZOV4XmzpatWdfT3ssa4gdBLTxaExVWSRRNSfNREEB41t7Vp+1ChS+0NozFdrE1HTgQeWuBADgtSTK0HZhHlHd4QaWTEpm8aofsOHCqHxjEY6Pf3Y7nNuEjLqRcnSfLfySlTTTAfmOAiA4qjFcAl62NpNXfG/BqT5vD96zEdlXeJoIIAq0LfzoJp1Bx3O6rLIt1MRmSiUzEkVDjIFnt2i3FDDuNP2M9dCdKbgiNRO4I2il/SP9sPf1Mu3gaIO619eYO9cfNqPmM7WabX1ls7uneMcM+U9iWQ1ZisBEANEnvcepSfCeIF/4EEgGbEC/IVhIQsl1RELqZ2oHhcjTOeNaTKyiA2mEQ5sngOP4Z0SOotSRgm3J5QDPpVy/qOvq7kzZ8GJVCJt9Zw3xh1xbnXltn4xc64gAJupSgecqwyYbnbdZWsHHNrteVzxTMcOpP6RrpYwkF5a3W8Rz+XexbHcYyeFnJ0sFHX8u9qEfw7JAzSDloupX8HbjmQ6IKrFLX4FlDzzB8Ss4MAi88SYR+A2Qnt2RVjFShLCUmwrdKWAByzcehmqYmPuvcij+Jtgr2fRJ1IQljjbO8pC8QzGtWk=
 script:
 - sbt ++$TRAVIS_SCALA_VERSION test && bash ./.travis/check-code-formatting.sh
 deploy:
@@ -13,13 +16,10 @@ deploy:
   script: bash ./.travis/deploy.sh
   on:
     branch: master
-
-# caching suggestions from http://www.scala-sbt.org/0.13/docs/Travis-CI-with-sbt.html
 cache:
   directories:
-    - $HOME/.ivy2/cache
-    - $HOME/.sbt
+  - "$HOME/.ivy2/cache"
+  - "$HOME/.sbt"
 before_cache:
-  # Cleanup the cached directories to avoid unnecessary cache updates
-  - find $HOME/.ivy2/cache -name "ivydata-*.properties" -print -delete
-  - find $HOME/.sbt        -name "*.lock"               -print -delete
+- find $HOME/.ivy2/cache -name "ivydata-*.properties" -print -delete
+- find $HOME/.sbt        -name "*.lock"               -print -delete
