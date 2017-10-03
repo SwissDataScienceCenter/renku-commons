@@ -1,4 +1,3 @@
-addSbtPlugin("org.scalariform" % "sbt-scalariform" % "1.7.1")
 /*
  * Copyright 2017 - Swiss Data Science Center (SDSC)
  * A partnership between École Polytechnique Fédérale de Lausanne (EPFL) and
@@ -17,3 +16,11 @@ addSbtPlugin("org.scalariform" % "sbt-scalariform" % "1.7.1")
  * limitations under the License.
  */
 
+// Scalariform plugin for code formatting
+addSbtPlugin("org.scalariform" % "sbt-scalariform" % "1.7.1")
+
+// Sonatype plugin
+addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "2.0")
+
+// SBT PGP plugin
+addSbtPlugin("com.jsuereth" % "sbt-pgp" % "1.0.0")

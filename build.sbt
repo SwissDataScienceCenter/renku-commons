@@ -17,16 +17,14 @@
  */
 
 organization := "ch.datascience"
-version := "0.1.0-SNAPSHOT"
+version := "0.1.0"
 scalaVersion := "2.11.8"
 name := "renga-commons"
 
-resolvers += DefaultMavenRepository
 resolvers += "jitpack" at "https://jitpack.io"
 resolvers += "Oracle Released Java Packages" at "http://download.oracle.com/maven"
-resolvers += "SDSC Snapshots" at "https://testing.datascience.ch:18081/repository/maven-snapshots/"
 
-lazy val renga_version = "0.1.0-SNAPSHOT"
+lazy val renga_version = "0.1.0"
 libraryDependencies += "ch.datascience" %% "renga-graph-core" % renga_version
 libraryDependencies += "ch.datascience" %% "renga-graph-init" % renga_version
 
@@ -81,11 +79,36 @@ val preferences =
 SbtScalariform.scalariformSettings ++ Seq(preferences)
 
 // Publishing
+sonatypeProfileName := "ch.datascience"
+publishMavenStyle := true
+pomIncludeRepository := { _ => false }
+licenses := Seq("The Apache License, Version 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt"))
+homepage := Some(url("https://datascience.ch/renga-platform/"))
+scmInfo := Some(
+  ScmInfo(
+    url("https://github.com/SwissDataScienceCenter/renga-graph"),
+    "scm:git@github.com:SwissDataScienceCenter/renga-graph.git"
+  )
+)
+developers := List(
+  Developer(id="leafty", name="Johann-Michael Thiebaut", email="johann.thiebaut@gmail.com", url=url("https://github.com/leafty"))
+)
 publishTo := {
-  val nexus = "https://testing.datascience.ch:18081/"
   if (isSnapshot.value)
-    Some("snapshots" at nexus + "repository/maven-snapshots/")
+    Some(Opts.resolver.sonatypeSnapshots)
   else
-    None //TODO
+    Some(Opts.resolver.sonatypeStaging)
 }
-credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
+publishArtifact in Test := false
+
+credentials ++= (for {
+  username <- sys.env.get("SONATYPE_USERNAME")
+  password <- sys.env.get("SONATYPE_PASSWORD")
+} yield Credentials(
+  "Sonatype Nexus Repository Manager",
+  "oss.sonatype.org",
+  username,
+  password)).toSeq
+
+pgpPublicRing := baseDirectory.value / "project" / ".gnupg" / "pubring.gpg"
+pgpSecretRing := baseDirectory.value / "project" / ".gnupg" / "secring.gpg"
