@@ -17,14 +17,15 @@
  */
 
 organization := "ch.datascience"
-version := "0.1.0"
+version := "0.1.1-SNAPSHOT"
 scalaVersion := "2.11.8"
 name := "renga-commons"
 
 resolvers += "jitpack" at "https://jitpack.io"
 resolvers += "Oracle Released Java Packages" at "http://download.oracle.com/maven"
+resolvers += Resolver.sonatypeRepo("snapshots")
 
-lazy val renga_version = "0.1.0"
+lazy val renga_version = "0.1.1-SNAPSHOT"
 libraryDependencies += "ch.datascience" %% "renga-graph-core" % renga_version
 libraryDependencies += "ch.datascience" %% "renga-graph-init" % renga_version
 
@@ -86,8 +87,8 @@ licenses := Seq("The Apache License, Version 2.0" -> url("http://www.apache.org/
 homepage := Some(url("https://datascience.ch/renga-platform/"))
 scmInfo := Some(
   ScmInfo(
-    url("https://github.com/SwissDataScienceCenter/renga-graph"),
-    "scm:git@github.com:SwissDataScienceCenter/renga-graph.git"
+    url("https://github.com/SwissDataScienceCenter/renga-commons"),
+    "scm:git@github.com:SwissDataScienceCenter/renga-commons.git"
   )
 )
 developers := List(
