@@ -48,7 +48,10 @@ class ImplGraphMutationClient(
       token <- tokenProvider.get
       request = ws.url( s"$baseUrl/mutation" ).withHeaders( "Accept" -> "application/json", "Authorization" -> s"Bearer $token" ).withRequestTimeout( 10.seconds )
       response <- request.post( Json.toJson( mutation )( MutationFormat ) )
-    } yield response.json.as[Event]
+    } yield response.status match {
+      case 200 => response.json.as[Event]
+      case _   => throw new RuntimeException( s"Mutation rejected: ${Json.toJson( mutation )( MutationFormat )} . Reason: ${response.status} ${response.body}" )
+    }
   }
 
   def wait( uuid: UUID, timeout: Option[Deadline] ): Future[EventStatus] = {
