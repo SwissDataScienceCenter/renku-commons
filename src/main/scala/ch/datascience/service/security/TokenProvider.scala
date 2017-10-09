@@ -54,7 +54,7 @@ class TokenProvider(
   protected def currentValidToken: Option[String] = {
     val now = Instant.now()
     currentToken match {
-      case Some( AccessToken( token, expires ) ) if expires.compareTo( now ) < 0 => Some( token )
+      case Some( AccessToken( token, expires ) ) if now.compareTo( expires ) < 0 => Some( token )
       case _ => None
     }
   }
