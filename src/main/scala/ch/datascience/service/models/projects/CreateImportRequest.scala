@@ -18,12 +18,16 @@
 
 package ch.datascience.service.models.projects
 
-import play.api.libs.json.OFormat
+import ch.datascience.graph.Constants.VertexId
+import ch.datascience.service.models.resource.{ ScopeQualifier, SingleScopeAccessRequest }
+import play.api.libs.json.JsObject
 
-package object json {
+case class CreateImportRequest(
+    resourceId: VertexId
+) extends SingleScopeAccessRequest.ToSingleScopeAccessRequest {
 
-  implicit lazy val CreateImportRequestFormat: OFormat[CreateImportRequest] = CreateImportRequestMappers.CreateImportRequestFormat
-  implicit lazy val CreateProjectRequestFormat: OFormat[CreateProjectRequest] = CreateProjectRequestMappers.CreateProjectRequestFormat
-  implicit lazy val SimpleProjectFormat: OFormat[SimpleProject] = SimpleProjectMappers.SimpleProjectFormat
+  def toAccessRequest( extraClaims: Option[JsObject] ): SingleScopeAccessRequest = {
+    SingleScopeAccessRequest( permissionHolderId = None, ScopeQualifier.ImportCreate, extraClaims )
+  }
 
 }
