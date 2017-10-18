@@ -16,14 +16,16 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.models.projects
+package ch.datascience.service.models.projects.json
 
-import play.api.libs.json.OFormat
+import ch.datascience.graph.Constants.VertexId
+import ch.datascience.service.models.projects.CreateImportRequest
+import play.api.libs.json._
+import play.api.libs.functional.syntax._
 
-package object json {
+object CreateImportRequestMappers {
 
-  implicit lazy val CreateImportRequestFormat: OFormat[CreateImportRequest] = CreateImportRequestMappers.CreateImportRequestFormat
-  implicit lazy val CreateProjectRequestFormat: OFormat[CreateProjectRequest] = CreateProjectRequestMappers.CreateProjectRequestFormat
-  implicit lazy val SimpleProjectFormat: OFormat[SimpleProject] = SimpleProjectMappers.SimpleProjectFormat
+  def CreateImportRequestFormat: OFormat[CreateImportRequest] =
+    ( JsPath \ "resource" ).format[VertexId].inmap( CreateImportRequest, unlift( CreateImportRequest.unapply ) )
 
 }

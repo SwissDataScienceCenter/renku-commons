@@ -34,7 +34,8 @@ object ScopeQualifier {
     ContextsRead,
     ExecutionsWrite,
     ExecutionsRead,
-    ProjectCreate
+    ProjectCreate,
+    ImportCreate
   )
 
   def valueOf( name: String ): ScopeQualifier = ScopeQualifier.apply( name )
@@ -49,6 +50,7 @@ object ScopeQualifier {
     case ExecutionsWrite.name => ExecutionsWrite
     case ExecutionsRead.name  => ExecutionsRead
     case ProjectCreate.name   => ProjectCreate
+    case ImportCreate.name    => ImportCreate
   }
 
   case object StorageRead extends ScopeQualifier( "storage:read" )
@@ -68,5 +70,7 @@ object ScopeQualifier {
   case object ExecutionsRead extends ScopeQualifier( "deployer:executions_read" )
 
   case object ProjectCreate extends ScopeQualifier( "project:create" )
+
+  case object ImportCreate extends ScopeQualifier( "project:import" )
 
 }
