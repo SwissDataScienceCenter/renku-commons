@@ -30,14 +30,10 @@ case class CopyFileRequest(
     bucketId:   AccessRequest#PermissionHolderId,
     fileName:   String,
     labels:     Set[String]
-) extends SingleScopeAccessRequest.ToSingleScopeAccessRequest {
+) {
 
-  def toAccessRequest( extraClaims: Option[JsObject] ): SingleScopeAccessRequest = {
-    SingleScopeAccessRequest( permissionHolderId = None, CopyFileRequest.scope, extraClaims )
-  }
+  def underlyingRead: ReadResourceRequest = ReadResourceRequest( resourceId )
 
-}
+  def underlyingCreate: CreateFileRequest = CreateFileRequest( bucketId, fileName, labels )
 
-object CopyFileRequest {
-  lazy val scope: ScopeQualifier = ScopeQualifier.StorageCreate
 }
