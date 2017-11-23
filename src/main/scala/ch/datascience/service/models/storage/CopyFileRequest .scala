@@ -18,17 +18,26 @@
 
 package ch.datascience.service.models.storage
 
-import play.api.libs.json.OFormat
+import ch.datascience.graph.Constants.VertexId
+import ch.datascience.service.models.resource.{ AccessRequest, ScopeQualifier, SingleScopeAccessRequest }
+import play.api.libs.json.JsObject
 
 /**
- * Created by johann on 18/07/17.
+ * Created by johann on 13/07/17.
  */
-package object json {
+case class CopyFileRequest(
+    resourceId: AccessRequest#PermissionHolderId,
+    bucketId:   AccessRequest#PermissionHolderId,
+    fileName:   String,
+    labels:     Set[String]
+) extends SingleScopeAccessRequest.ToSingleScopeAccessRequest {
 
-  implicit lazy val CreateBucketRequestFormat: OFormat[CreateBucketRequest] = CreateBucketRequestMappers.CreateBucketRequestFormat
-  implicit lazy val CreateFileRequestFormat: OFormat[CreateFileRequest] = CreateFileRequestMappers.CreateFileRequestFormat
-  implicit lazy val ReadResourceRequestFormat: OFormat[ReadResourceRequest] = ReadResourceRequestMappers.ReadResourceRequestFormat
-  implicit lazy val WriteResourceRequestFormat: OFormat[WriteResourceRequest] = WriteResourceRequestMappers.WriteResourceRequestFormat
-  implicit lazy val CopyFileRequestFormat: OFormat[CopyFileRequest] = CopyFileRequestMappers.CopyFileRequestFormat
+  def toAccessRequest( extraClaims: Option[JsObject] ): SingleScopeAccessRequest = {
+    SingleScopeAccessRequest( permissionHolderId = None, CopyFileRequest.scope, extraClaims )
+  }
 
+}
+
+object CopyFileRequest {
+  lazy val scope: ScopeQualifier = ScopeQualifier.StorageCreate
 }
