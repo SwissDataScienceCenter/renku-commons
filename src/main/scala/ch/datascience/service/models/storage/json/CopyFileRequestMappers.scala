@@ -31,14 +31,14 @@ private[json] object CopyFileRequestMappers {
 
   def CopyFileRequestFormat: OFormat[CopyFileRequest] = RequestTypeMappers.format( "copy_file" )( (
     ( JsPath \ "resource_id" ).format[VertexId] and
-    ( JsPath \ "bucket_id" ).format[VertexId] and
+    ( JsPath \ "bucket_id" ).formatNullable[VertexId] and
     ( JsPath \ "file_name" ).format[String] and
     ( JsPath \ "labels" ).formatNullable[Seq[String]]
   )( read, write ) )
 
   private[this] def read(
       resourceId: VertexId,
-      bucketId:   VertexId,
+      bucketId:   Option[VertexId],
       fileName:   String,
       labels:     Option[Seq[String]]
   ): CopyFileRequest = {
@@ -50,7 +50,7 @@ private[json] object CopyFileRequestMappers {
     )
   }
 
-  private[this] def write( request: CopyFileRequest ): ( VertexId, VertexId, String, Option[Seq[String]] ) = {
+  private[this] def write( request: CopyFileRequest ): ( VertexId, Option[VertexId], String, Option[Seq[String]] ) = {
     val labels = if ( request.labels.isEmpty ) None else Some( request.labels.toSeq )
     ( request.resourceId, request.bucketId, request.fileName, labels )
   }

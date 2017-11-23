@@ -27,13 +27,13 @@ import play.api.libs.json.JsObject
  */
 case class CopyFileRequest(
     resourceId: AccessRequest#PermissionHolderId,
-    bucketId:   AccessRequest#PermissionHolderId,
+    bucketId:   Option[AccessRequest#PermissionHolderId],
     fileName:   String,
     labels:     Set[String]
 ) {
 
   def underlyingRead: ReadResourceRequest = ReadResourceRequest( resourceId )
 
-  def underlyingCreate: CreateFileRequest = CreateFileRequest( bucketId, fileName, labels )
+  def underlyingCreate( realBucketId: AccessRequest#PermissionHolderId ): CreateFileRequest = CreateFileRequest( realBucketId, fileName, labels )
 
 }
