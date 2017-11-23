@@ -18,17 +18,22 @@
 
 package ch.datascience.service.models.storage
 
-import play.api.libs.json.OFormat
+import ch.datascience.graph.Constants.VertexId
+import ch.datascience.service.models.resource.{ AccessRequest, ScopeQualifier, SingleScopeAccessRequest }
+import play.api.libs.json.JsObject
 
 /**
- * Created by johann on 18/07/17.
+ * Created by johann on 13/07/17.
  */
-package object json {
+case class CopyFileRequest(
+    resourceId: AccessRequest#PermissionHolderId,
+    bucketId:   Option[AccessRequest#PermissionHolderId],
+    fileName:   String,
+    labels:     Set[String]
+) {
 
-  implicit lazy val CreateBucketRequestFormat: OFormat[CreateBucketRequest] = CreateBucketRequestMappers.CreateBucketRequestFormat
-  implicit lazy val CreateFileRequestFormat: OFormat[CreateFileRequest] = CreateFileRequestMappers.CreateFileRequestFormat
-  implicit lazy val ReadResourceRequestFormat: OFormat[ReadResourceRequest] = ReadResourceRequestMappers.ReadResourceRequestFormat
-  implicit lazy val WriteResourceRequestFormat: OFormat[WriteResourceRequest] = WriteResourceRequestMappers.WriteResourceRequestFormat
-  implicit lazy val CopyFileRequestFormat: OFormat[CopyFileRequest] = CopyFileRequestMappers.CopyFileRequestFormat
+  def underlyingRead: ReadResourceRequest = ReadResourceRequest( resourceId )
+
+  def underlyingCreate( realBucketId: AccessRequest#PermissionHolderId ): CreateFileRequest = CreateFileRequest( realBucketId, fileName, labels )
 
 }
