@@ -17,17 +17,9 @@
  */
 
 organization := "ch.datascience"
-version := "0.1.1-SNAPSHOT"
+version := "0.2.0-SNAPSHOT"
 scalaVersion := "2.11.8"
 name := "renga-commons"
-
-resolvers += "jitpack" at "https://jitpack.io"
-resolvers += "Oracle Released Java Packages" at "http://download.oracle.com/maven"
-resolvers += Resolver.sonatypeRepo("snapshots")
-
-lazy val renga_version = "0.1.1-SNAPSHOT"
-libraryDependencies += "ch.datascience" %% "renga-graph-core" % renga_version
-libraryDependencies += "ch.datascience" %% "renga-graph-init" % renga_version
 
 lazy val play_version = "2.5.14"
 libraryDependencies += "com.typesafe.play" %% "play" % play_version
@@ -37,9 +29,6 @@ libraryDependencies += "com.typesafe.play" %% "play-test" % play_version
 
 lazy val java_jwt_version = "3.2.0"
 libraryDependencies += "com.auth0" % "java-jwt" % java_jwt_version
-
-lazy val janusgraph_version = "0.2.0"
-libraryDependencies += "org.janusgraph" % "janusgraph-core" % janusgraph_version
 
 libraryDependencies += "com.fasterxml.jackson.dataformat" % "jackson-dataformat-yaml" % "2.8.9"
 
