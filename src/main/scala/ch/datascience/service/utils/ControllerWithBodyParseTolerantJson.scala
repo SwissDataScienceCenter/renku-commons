@@ -16,14 +16,19 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.utils.persistence.scope
+package ch.datascience.service.utils
 
-import javax.inject.{ Inject, Singleton }
-
-import ch.datascience.graph.scope.{ Scope => Base }
+import play.api.libs.concurrent.Execution.Implicits._
+import play.api.libs.json._
+import play.api.mvc._
 
 /**
- * Created by johann on 13/06/17.
+ * Created by johann on 25/04/17.
  */
-@Singleton
-class Scope @Inject() ( override protected val persistenceLayer: RemotePersistenceLayer ) extends Base( persistenceLayer = persistenceLayer )
+trait ControllerWithBodyParseTolerantJson { this: Controller =>
+
+  def bodyParseJson[A]( implicit rds: Reads[A] ): BodyParser[A] = parse.tolerantJson.validate(
+    _.validate[A]( rds ).asEither.left.map( e => BadRequest( JsError.toJson( e ) ) )
+  )
+
+}
