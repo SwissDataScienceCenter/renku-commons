@@ -19,7 +19,7 @@
 organization := "ch.datascience"
 version := "0.2.0-SNAPSHOT"
 scalaVersion := "2.11.8"
-name := "renga-commons"
+name := "renku-commons"
 
 lazy val play_version = "2.5.14"
 libraryDependencies += "com.typesafe.play" %% "play" % play_version
@@ -73,11 +73,11 @@ sonatypeProfileName := "ch.datascience"
 publishMavenStyle := true
 pomIncludeRepository := { _ => false }
 licenses := Seq("The Apache License, Version 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt"))
-homepage := Some(url("https://datascience.ch/renga-platform/"))
+homepage := Some(url("https://datascience.ch/renku-platform/"))
 scmInfo := Some(
   ScmInfo(
-    url("https://github.com/SwissDataScienceCenter/renga-commons"),
-    "scm:git@github.com:SwissDataScienceCenter/renga-commons.git"
+    url("https://github.com/SwissDataScienceCenter/renku-commons"),
+    "scm:git@github.com:SwissDataScienceCenter/renku-commons.git"
   )
 )
 developers := List(
