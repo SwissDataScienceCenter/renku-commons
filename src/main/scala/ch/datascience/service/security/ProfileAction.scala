@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 - Swiss Data Science Center (SDSC)
+ * Copyright 2017-2018 - Swiss Data Science Center (SDSC)
  * A partnership between École Polytechnique Fédérale de Lausanne (EPFL) and
  * Eidgenössische Technische Hochschule Zürich (ETHZ).
  *
@@ -29,7 +29,7 @@ import scala.util.Try
 object ProfileAction extends ActionTransformer[RequestWithToken, RequestWithProfile] {
 
   protected def transform[A]( request: RequestWithToken[A] ): Future[RequestWithProfile[A]] = {
-    val executionId = request.headers.get( "RENGA-DEPLOYER-EXECUTION" ).map( x => Try { Some( x.toLong ) } ).flatMap( _.getOrElse( None ) )
+    val executionId = request.headers.get( "RENKU-DEPLOYER-EXECUTION" ).map( x => Try { Some( x.toLong ) } ).flatMap( _.getOrElse( None ) )
     Future.successful( new RequestWithProfile[A]( request.token, executionId, request ) )
   }
 
