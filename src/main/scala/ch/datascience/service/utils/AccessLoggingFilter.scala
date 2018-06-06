@@ -21,10 +21,9 @@ package ch.datascience.service.utils
 import akka.stream.Materializer
 import javax.inject.Inject
 import play.api.Logger
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.mvc.{ Filter, RequestHeader, Result }
 
-import scala.concurrent.Future
+import scala.concurrent.{ ExecutionContext, Future }
 import scala.util.{ Failure, Success }
 
 class AccessLoggingFilter @Inject() (
@@ -36,6 +35,8 @@ class AccessLoggingFilter @Inject() (
 
   def apply( f: RequestHeader => Future[Result] )( rh: RequestHeader ): Future[Result] = {
     logger.info( s"Received request ${rh.id} - ${rh.path}" )
+
+    implicit val ex: ExecutionContext = mat.executionContext
     val futureResult = f( rh )
 
     futureResult.onComplete {

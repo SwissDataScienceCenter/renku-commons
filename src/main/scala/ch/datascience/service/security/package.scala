@@ -16,23 +16,13 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.utils
+package ch.datascience.service
 
-import play.api.libs.json._
-import play.api.mvc._
+import com.auth0.jwt.interfaces.DecodedJWT
+import play.api.libs.typedmap.TypedKey
 
-import scala.concurrent.ExecutionContext
+package object security {
 
-/**
- * Created by johann on 25/04/17.
- */
-trait ControllerWithBodyParseTolerantJson { this: BaseController =>
-
-  def bodyParseJson[A]( implicit rds: Reads[A] ): BodyParser[A] = {
-    implicit val ec: ExecutionContext = defaultExecutionContext
-    parse.tolerantJson.validate(
-      _.validate[A]( rds ).asEither.left.map( e => BadRequest( JsError.toJson( e ) ) )
-    )
-  }
+  lazy val VerifiedBearerToken: TypedKey[DecodedJWT] = TypedKey( "Verified Bearer Token" )
 
 }

@@ -42,7 +42,7 @@ trait TokenFilterAction[B]
   lazy val tokenFilter: TokenFilter = TokenFilter( verifier, realm, altVerifiers: _* )
 
   protected def transform[A]( request: Request[A] ): Future[RequestWithToken[A]] = Future.successful {
-    require( request.tags.get( "VERIFIED_TOKEN" ).contains( tokenFilter.extractToken( request.headers ).get ) )
+    require( request.attrs.get( VerifiedBearerToken ).contains( JWT.decode( tokenFilter.extractToken( request.headers ).get ) ) )
     val token = JWT.decode( tokenFilter.extractToken( request.headers ).get )
     new RequestWithToken[A]( token, request )
   }

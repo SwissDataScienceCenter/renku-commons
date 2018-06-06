@@ -43,7 +43,7 @@ trait SwaggerControllerHelper { this: BaseController =>
     }
   }
 
-  lazy val authorizationUrl: String = config.getString( "swagger.authorization.provider.url" ).get
+  lazy val authorizationUrl: String = config.get[String]( "swagger.authorization.provider.url" )
 
   protected def extractHost[A]( request: Request[A] ): String = {
     request.headers.get( "X-Forwarded-Host" ).getOrElse(
