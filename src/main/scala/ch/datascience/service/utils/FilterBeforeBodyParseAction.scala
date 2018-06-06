@@ -19,15 +19,16 @@
 package ch.datascience.service.utils
 
 import akka.util.ByteString
+import javax.inject.Inject
 import play.api.libs.streams.Accumulator
 import play.api.mvc._
 
-import scala.concurrent.Future
+import scala.concurrent.{ ExecutionContext, Future }
 
 /**
  * Created by johann on 11/07/17.
  */
-trait AbstractFilterBeforeBodyParseAction extends ActionBuilder[Request] {
+trait FilterBeforeBodyParseAction[B] extends ActionBuilder[Request, B] {
 
   protected def filter( rh: RequestHeader ): Either[Result, RequestHeader]
 
@@ -42,16 +43,37 @@ trait AbstractFilterBeforeBodyParseAction extends ActionBuilder[Request] {
 
     def parser: BodyParser[A] = action.parser
 
+    def executionContext: ExecutionContext = action.executionContext
+
   }
 
-  private[this] def makeError[A]( result: Result ): BodyParser[A] = BodyParsers.parse.error( Future.successful( result ) )
+  // private[this] def makeError[A]( result: Result ): BodyParser[A] = BodyParsers.parse.error( Future.successful( result ) )
 
 }
 
-case class FilterBeforeBodyParseAction( filter: ( RequestHeader ) => Either[Result, RequestHeader] ) extends AbstractFilterBeforeBodyParseAction {
+class FilterBeforeBodyParseActionBuilder @Inject() (
+    parser: BodyParsers.Default
+)(
+    implicit
+    executionContext: ExecutionContext
+) {
+
+  def apply( filter: RequestHeader => Either[Result, RequestHeader] ): FilterBeforeBodyParseAction[AnyContent] = {
+    FilterBeforeBodyParseActionImpl( filter, parser )
+  }
+
+}
+
+case class FilterBeforeBodyParseActionImpl[B](
+    filter: RequestHeader => Either[Result, RequestHeader],
+    parser: BodyParser[B]
+)(
+    implicit
+    val executionContext: ExecutionContext
+) extends FilterBeforeBodyParseAction[B] {
 
   protected def filter( rh: RequestHeader ): Either[Result, RequestHeader] = filter.apply( rh )
 
-  def invokeBlock[A]( request: Request[A], block: ( Request[A] ) => Future[Result] ): Future[Result] = block( request )
+  def invokeBlock[A]( request: Request[A], block: Request[A] => Future[Result] ): Future[Result] = block( request )
 
 }

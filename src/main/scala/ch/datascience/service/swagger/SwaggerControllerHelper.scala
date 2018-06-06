@@ -19,19 +19,21 @@
 package ch.datascience.service.swagger
 
 import play.api.Configuration
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
+
+import scala.concurrent.ExecutionContext
 import play.api.libs.json.JsObject
 import play.api.mvc._
 
 import scala.concurrent.Future
 
-trait SwaggerControllerHelper { this: Controller =>
+trait SwaggerControllerHelper { this: BaseController =>
 
   def config: Configuration
 
   def swaggerSpec: JsObject
 
-  def getSwagger: Action[Unit] = Action.async( BodyParsers.parse.empty ) { implicit request =>
+  def getSwagger: Action[Unit] = Action.async( parse.empty ) { implicit request =>
+    implicit val ec: ExecutionContext = controllerComponents.executionContext
     Future {
       val host = extractHost( request )
       val scheme = extractScheme( request )

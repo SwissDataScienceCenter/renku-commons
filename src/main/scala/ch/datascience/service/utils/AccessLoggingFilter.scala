@@ -18,9 +18,8 @@
 
 package ch.datascience.service.utils
 
-import javax.inject.Inject
-
 import akka.stream.Materializer
+import javax.inject.Inject
 import play.api.Logger
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.mvc.{ Filter, RequestHeader, Result }

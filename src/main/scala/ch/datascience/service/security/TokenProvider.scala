@@ -21,8 +21,8 @@ package ch.datascience.service.security
 import java.time.Instant
 
 import play.api.Configuration
-import play.api.libs.json._
 import play.api.libs.functional.syntax._
+import play.api.libs.json._
 import play.api.libs.ws.{ WSAuthScheme, WSClient }
 
 import scala.concurrent.{ ExecutionContext, Future }

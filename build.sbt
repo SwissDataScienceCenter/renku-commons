@@ -18,19 +18,20 @@
 
 organization := "ch.datascience"
 version := "0.2.0-SNAPSHOT"
-scalaVersion := "2.11.8"
+scalaVersion := "2.12.6"
 name := "renku-commons"
 
-lazy val play_version = "2.5.14"
+lazy val play_version = "2.6.15"
 libraryDependencies += "com.typesafe.play" %% "play" % play_version
-libraryDependencies += "com.typesafe.play" %% "play-json" % play_version
-libraryDependencies += "com.typesafe.play" %% "play-ws" % play_version
+lazy val play_json_version = "2.6.9"
+libraryDependencies += "com.typesafe.play" %% "play-json" % play_json_version
+libraryDependencies += "com.typesafe.play" %% "play-ahc-ws" % play_version
 libraryDependencies += "com.typesafe.play" %% "play-test" % play_version
 
-lazy val java_jwt_version = "3.2.0"
+lazy val java_jwt_version = "3.3.0"
 libraryDependencies += "com.auth0" % "java-jwt" % java_jwt_version
 
-libraryDependencies += "com.fasterxml.jackson.dataformat" % "jackson-dataformat-yaml" % "2.8.9"
+libraryDependencies += "com.fasterxml.jackson.dataformat" % "jackson-dataformat-yaml" % "2.8.11"
 
 // Source code formatting
 import scalariform.formatter.preferences._
