@@ -18,11 +18,10 @@
 
 package ch.datascience.service
 
-import com.auth0.jwt.interfaces.DecodedJWT
 import play.api.libs.typedmap.TypedKey
 
 package object security {
 
-  lazy val VerifiedBearerToken: TypedKey[DecodedJWT] = TypedKey( "Verified Bearer Token" )
+  lazy val VerifiedBearerToken: TypedKey[String] = TypedKey( "Verified Bearer Token" )
 
 }

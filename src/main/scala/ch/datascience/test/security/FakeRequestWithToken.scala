@@ -30,7 +30,7 @@ object FakeRequestWithToken {
 
     def withToken( token: DecodedJWT ): FakeRequest[A] = {
       underlying
-        .withAttrs( TypedMap( security.VerifiedBearerToken -> token ) )
+        .withAttrs( TypedMap( security.VerifiedBearerToken -> token.getToken ) )
         .withHeaders( Headers( "Authorization" -> s"Bearer ${token.getToken}" ) )
     }
 

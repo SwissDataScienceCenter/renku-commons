@@ -42,13 +42,13 @@ trait TokenFilterAction[B]
   lazy val tokenFilter: TokenFilter = TokenFilter( verifier, realm, altVerifiers: _* )
 
   protected def transform[A]( request: Request[A] ): Future[RequestWithToken[A]] = Future.successful {
-    require( request.attrs.get( VerifiedBearerToken ).contains( JWT.decode( tokenFilter.extractToken( request.headers ).get ) ) )
+    require( request.attrs.get( VerifiedBearerToken ).contains( JWT.decode( tokenFilter.extractToken( request.headers ).get ).getToken ) )
     val token = JWT.decode( tokenFilter.extractToken( request.headers ).get )
     new RequestWithToken[A]( token, request )
   }
 
   def filter( rh: RequestHeader ): Either[Result, RequestHeader] = {
-    tokenFilter.filter( rh ).right.map( token => rh.withTag( "VERIFIED_TOKEN", token.getToken ) )
+    tokenFilter.filter( rh ).right.map( token => rh.addAttr( VerifiedBearerToken, token.getToken ) )
   }
 
 }
