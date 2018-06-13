@@ -18,17 +18,20 @@
 
 package ch.datascience.test.security
 
-import play.api.mvc.RequestHeader
+import ch.datascience.service.security
+import com.auth0.jwt.interfaces.DecodedJWT
+import play.api.libs.typedmap.TypedMap
+import play.api.mvc.Headers
 import play.api.test.FakeRequest
 
 object FakeRequestWithToken {
 
   implicit class RichFakeRequest[A]( underlying: FakeRequest[A] ) {
 
-    def withToken( token: String ): FakeRequest[A] = {
-      val newTags: Map[String, String] = underlying.tags + ( "VERIFIED_TOKEN" -> token )
-
-      underlying.copyFakeRequest( tags = newTags ).withHeaders( "Authorization" -> s"Bearer $token" )
+    def withToken( token: DecodedJWT ): FakeRequest[A] = {
+      underlying
+        .withAttrs( TypedMap( security.VerifiedBearerToken -> token.getToken ) )
+        .withHeaders( Headers( "Authorization" -> s"Bearer ${token.getToken}" ) )
     }
 
   }

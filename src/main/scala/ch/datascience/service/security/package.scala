@@ -16,28 +16,12 @@
  * limitations under the License.
  */
 
-package ch.datascience.service.security
+package ch.datascience.service
 
-import ch.datascience.service.utils.AbstractFilterBeforeBodyParseAction
-import com.auth0.jwt.exceptions._
-import com.auth0.jwt.{ JWT, JWTVerifier }
-import play.api.mvc._
+import play.api.libs.typedmap.TypedKey
 
-import scala.concurrent.Future
-import scala.util.Try
-import scala.util.matching.Regex
+package object security {
 
-/**
- * Created by johann on 13/07/17.
- */
-object ProfileFilterAction {
-
-  def apply( verifier: JWTVerifier, realm: String, altVerifiers: JWTVerifier* ): ActionBuilder[RequestWithProfile] = {
-    TokenFilterAction( verifier, realm, altVerifiers: _* ) andThen ProfileAction
-  }
-
-  def apply( verifier: JWTVerifier, altVerifiers: JWTVerifier* ): ActionBuilder[RequestWithProfile] = {
-    TokenFilterAction( verifier, realm = "", altVerifiers: _* ) andThen ProfileAction
-  }
+  lazy val VerifiedBearerToken: TypedKey[String] = TypedKey( "Verified Bearer Token" )
 
 }

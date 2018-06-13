@@ -24,4 +24,8 @@ import play.api.mvc.{ Request, WrappedRequest }
 /**
  * Created by johann on 13/07/17.
  */
-class RequestWithToken[+A]( val token: DecodedJWT, request: Request[A] ) extends WrappedRequest[A]( request )
+class RequestWithToken[+A]( val token: DecodedJWT, request: Request[A] ) extends WrappedRequest[A]( request ) {
+
+  def userId: String = token.getSubject
+
+}

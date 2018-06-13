@@ -18,39 +18,63 @@
 
 package ch.datascience.service.security
 
-import ch.datascience.service.utils.AbstractFilterBeforeBodyParseAction
+import ch.datascience.service.utils.FilterBeforeBodyParseAction
 import com.auth0.jwt.{ JWT, JWTVerifier }
-import com.auth0.jwt.exceptions._
+import javax.inject.Inject
 import play.api.mvc._
 
-import scala.concurrent.Future
-import scala.util.Try
-import scala.util.matching.Regex
+import scala.concurrent.{ ExecutionContext, Future }
 
 /**
  * Created by johann on 13/07/17.
  */
-case class TokenFilterAction( verifier: JWTVerifier, realm: String, altVerifiers: JWTVerifier* )
-  extends ActionBuilder[RequestWithToken]
+trait TokenFilterAction[B]
+  extends ActionBuilder[RequestWithToken, B]
   with ActionTransformer[Request, RequestWithToken]
-  with AbstractFilterBeforeBodyParseAction {
+  with FilterBeforeBodyParseAction[B] {
+
+  def verifier: JWTVerifier
+
+  def realm: String
+
+  def altVerifiers: Seq[JWTVerifier]
 
   lazy val tokenFilter: TokenFilter = TokenFilter( verifier, realm, altVerifiers: _* )
 
   protected def transform[A]( request: Request[A] ): Future[RequestWithToken[A]] = Future.successful {
-    require( request.tags.get( "VERIFIED_TOKEN" ).contains( tokenFilter.extractToken( request.headers ).get ) )
+    require( request.attrs.get( VerifiedBearerToken ).contains( JWT.decode( tokenFilter.extractToken( request.headers ).get ).getToken ) )
     val token = JWT.decode( tokenFilter.extractToken( request.headers ).get )
     new RequestWithToken[A]( token, request )
   }
 
   def filter( rh: RequestHeader ): Either[Result, RequestHeader] = {
-    tokenFilter.filter( rh ).right.map( token => rh.withTag( "VERIFIED_TOKEN", token.getToken ) )
+    tokenFilter.filter( rh ).right.map( token => rh.addAttr( VerifiedBearerToken, token.getToken ) )
   }
 
 }
 
-object TokenFilterAction {
+class TokenFilterActionBuilder @Inject() (
+    parser: BodyParsers.Default
+)(
+    implicit
+    executionContext: ExecutionContext
+) {
 
-  def apply( verifier: JWTVerifier, altVerifiers: JWTVerifier* ): TokenFilterAction = TokenFilterAction( verifier, realm = "", altVerifiers: _* )
+  def apply( verifier: JWTVerifier, realm: String, altVerifiers: JWTVerifier* ): TokenFilterAction[AnyContent] = {
+    TokenFilterActionImpl( verifier, realm, altVerifiers, parser )
+  }
+
+  def apply( verifier: JWTVerifier, altVerifiers: JWTVerifier* ): TokenFilterAction[AnyContent] = apply( verifier, realm = "", altVerifiers: _* )
 
 }
+
+case class TokenFilterActionImpl[B](
+    verifier: JWTVerifier,
+    realm:    String,
+
+    altVerifiers: Seq[JWTVerifier],
+    parser:       BodyParser[B]
+)(
+    implicit
+    val executionContext: ExecutionContext
+) extends TokenFilterAction[B]

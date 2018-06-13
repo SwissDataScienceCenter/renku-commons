@@ -23,10 +23,7 @@ import java.io.InputStream
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import play.api.libs.json.JsValue
-import play.api.libs.json.Json
 import play.api.libs.json.jackson.PlayJsonModule
-
-import scala.concurrent.Future
 
 object YamlHelper {
 

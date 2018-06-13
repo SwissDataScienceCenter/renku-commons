@@ -21,8 +21,8 @@ package ch.datascience.service.security
 import java.time.Instant
 
 import play.api.Configuration
-import play.api.libs.json._
 import play.api.libs.functional.syntax._
+import play.api.libs.json._
 import play.api.libs.ws.{ WSAuthScheme, WSClient }
 
 import scala.concurrent.{ ExecutionContext, Future }
@@ -35,9 +35,9 @@ class TokenProvider(
     ec: ExecutionContext
 ) {
 
-  lazy val clientId: String = config.getString( "client_id" ).get
-  lazy val clientSecret: String = config.getString( "client_secret" ).get
-  lazy val providerUrl: String = config.getString( "provider.url" ).get
+  lazy val clientId: String = config.get[String]( "client_id" )
+  lazy val clientSecret: String = config.get[String]( "client_secret" )
+  lazy val providerUrl: String = config.get[String]( "provider.url" )
 
   import TokenProvider._
 

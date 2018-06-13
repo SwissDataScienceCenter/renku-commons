@@ -35,15 +35,15 @@ import scala.concurrent.{ ExecutionContext, Future }
 object PublicKeyReader {
 
   def getRSAPublicKey( config: Configuration )( implicit ws: WSClient, ec: ExecutionContext ): Future[RSAPublicKey] = {
-    config.getString( "public-key" ) match {
+    config.getOptional[String]( "public-key" ) match {
       case Some( encodedKey ) => Future.successful( readRSAPublicKey( encodedKey ) )
       case None =>
-        val strict = config.getBoolean( "strict" ).getOrElse( true )
-        val provider = config.getConfig( "public-key-provider" )
+        val strict = config.getOptional[Boolean]( "strict" ).getOrElse( true )
+        val provider = config.getOptional[Configuration]( "public-key-provider" )
         if ( strict )
           Future.failed( new IllegalArgumentException( "Bad config: strict mode but no key given" ) )
-        else if ( provider.nonEmpty && provider.get.getString( "type" ).contains( "url" ) && provider.get.getString( "url" ).nonEmpty )
-          fetchRSAPublicKey( provider.get.getString( "url" ).get )
+        else if ( provider.nonEmpty && provider.get.getOptional[String]( "type" ).contains( "url" ) && provider.get.getOptional[String]( "url" ).nonEmpty )
+          fetchRSAPublicKey( provider.get.get[String]( "url" ) )
         else
           Future.failed( new IllegalArgumentException( "Bad config: no key or provider" ) )
     }

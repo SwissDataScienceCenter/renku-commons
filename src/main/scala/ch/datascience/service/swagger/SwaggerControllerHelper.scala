@@ -19,19 +19,21 @@
 package ch.datascience.service.swagger
 
 import play.api.Configuration
-import play.api.libs.concurrent.Execution.Implicits.defaultContext
+
+import scala.concurrent.ExecutionContext
 import play.api.libs.json.JsObject
 import play.api.mvc._
 
 import scala.concurrent.Future
 
-trait SwaggerControllerHelper { this: Controller =>
+trait SwaggerControllerHelper { this: BaseController =>
 
   def config: Configuration
 
   def swaggerSpec: JsObject
 
-  def getSwagger: Action[Unit] = Action.async( BodyParsers.parse.empty ) { implicit request =>
+  def getSwagger: Action[Unit] = Action.async( parse.empty ) { implicit request =>
+    implicit val ec: ExecutionContext = controllerComponents.executionContext
     Future {
       val host = extractHost( request )
       val scheme = extractScheme( request )
@@ -41,7 +43,7 @@ trait SwaggerControllerHelper { this: Controller =>
     }
   }
 
-  lazy val authorizationUrl: String = config.getString( "swagger.authorization.provider.url" ).get
+  lazy val authorizationUrl: String = config.get[String]( "swagger.authorization.provider.url" )
 
   protected def extractHost[A]( request: Request[A] ): String = {
     request.headers.get( "X-Forwarded-Host" ).getOrElse(
