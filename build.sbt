@@ -17,7 +17,7 @@
  */
 
 organization := "ch.datascience"
-version := "0.2.0-SNAPSHOT"
+version := "0.2.0"
 scalaVersion := "2.12.6"
 name := "renku-commons"
 
